@@ -2,9 +2,11 @@ import fs from 'node:fs';
 import readline from 'node:readline';
 import hdt from './hooks/messages/HDT.js';
 import rpm from './hooks/messages/RPM.js';
+import rmc from './hooks/messages/RMC.js';
 var data = [];
 var HDT = [];
 var RPM = [];
+var RMC = [];
 
 //Luetaan datasetti, poistetaan tyhjät välit ja ylimääräinen tieto. Tallennetaan Arrayn.
 async function processLineByLine() {
@@ -29,14 +31,19 @@ await processLineByLine();
 
 console.log("Hello world!");
 let message = "";
-for(var i = 0; i < data.length; i++){
-    if(data[i].match("HDT")){
-       message = hdt(data[i]);
+for (var i = 0; i < data.length; i++){
+    if (data[i].match("HDT")){
+        message = hdt(data[i]);
         HDT.push(message);
     }
-    if(data[i].match("RPM")){
+    if (data[i].match("RPM")){
         message = rpm(data[i]);
-       RPM.push(message);
+        RPM.push(message);
+    }
+    if (data[i].match("RMC")){
+        message = rmc(data[i]);
+        RMC.push(message);
+        console.log(message);
     }
 }
 
