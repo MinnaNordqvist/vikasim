@@ -1,9 +1,12 @@
 import fs from 'node:fs';
 import readline from 'node:readline';
+import hdt from './hooks/messages/HDT.js';
 var data = [];
+var HDT = [];
 
+//Luetaan datasetti, poistetaan tyhjät välit ja ylimääräinen tieto. Tallennetaan Arrayn.
 async function processLineByLine() {
-    const filestream = fs.createReadStream('./data/nmea0813.dat');
+    const filestream = fs.createReadStream('./data/nmea0183.dat');
     const rl = readline.createInterface({
         input: filestream,
         crlfDelay: Infinity,
@@ -23,8 +26,12 @@ async function processLineByLine() {
 await processLineByLine();     
 
 console.log("Hello world!");
+let message = "";
+for(var i = 0; i < data.length; i++){
+    if(data[i].match("HDT")){
+       message = hdt(data[i]);
+        HDT.push(message);
+    }
+}
 
-//for(var i = 0; i < data.length; i++){
-//    console.log(data[i]);
-//}
 
