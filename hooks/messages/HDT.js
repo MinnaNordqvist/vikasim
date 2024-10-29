@@ -1,16 +1,16 @@
 
 const hdt = (input) => {
+    let message = input.toString();
+    if (message.length == 0) {
+        return;
+    }
+
     const headingTrue = {
         speaker: "GS",
     };
     const sentence = "sentence";
     const degrees = "degrees";
     const cheksum = "checksum";
-
-    let message = input.toString();
-    if(message.length == 0) {
-        return;
-    }
 
     let iterate = message.split(',');
     Object.assign(headingTrue, {
