@@ -19,6 +19,7 @@ async function processLineByLine() {
     for await (const line of rl) {
         if (line != ""){
             var mod = line.slice(2);
+           // console.log(mod);
             data.push(mod);
         }
     }
@@ -26,24 +27,41 @@ async function processLineByLine() {
     return data;
 } 
 
-
 await processLineByLine();     
 
+
 console.log("Hello world!");
+
+let sentence = '$GPVHW,,T,347.9,M,50.3,N,93.2,K*6B';
+
+let sliced = sentence.slice(1,31);
+console.log(sliced);
+
+// Lasketaan Cheksum. Arvo palautuu dec lukuna, joka muunnetaan hexaksi.  
+var checksum = 0;
+for(var i = 0; i < sliced.length; i++) {
+  checksum = checksum ^ sliced.charCodeAt(i);
+}
+
+console.log("Checksum: " + checksum.toString(16).toUpperCase());
+
+
 let message = "";
 for (var i = 0; i < data.length; i++){
     if (data[i].match("HDT")){
         message = hdt(data[i]);
         HDT.push(message);
+        //console.log(message);
     }
     if (data[i].match("RPM")){
         message = rpm(data[i]);
         RPM.push(message);
+        //console.log(message);
     }
     if (data[i].match("RMC")){
         message = rmc(data[i]);
         RMC.push(message);
-        console.log(message);
+        //console.log(message);
     }
 }
 

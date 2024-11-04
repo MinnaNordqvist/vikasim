@@ -6,7 +6,7 @@ const rpm = (input) => {
     }
 
     const RevolutionsPerMinute = {
-        speaker: "GS",
+        speaker: "GP",
     };
     const sentence = "sentence";
     const source = "source";

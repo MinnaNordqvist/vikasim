@@ -4,9 +4,9 @@ const hdt = (input) => {
     if (message.length == 0) {
         return;
     }
-
+  
     const headingTrue = {
-        speaker: "GS",
+        speaker: "GP",
     };
     const sentence = "sentence";
     const degrees = "degrees";

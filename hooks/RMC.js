@@ -6,7 +6,7 @@ const rmc = (input) => {
     }
 
     const RecommendedMinimum ={
-        speaker: "GS",
+        speaker: "GP",
     };
     const sentence = "sentence";
     const time = "UTC time";
