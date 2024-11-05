@@ -20,8 +20,9 @@ async function processLineByLine() {
   
     for await (const line of rl) {
         if (line != ""){
-            var mod = line.slice(2);
-           // console.log(mod);
+            let index = line.indexOf("$");
+            var mod = line.slice(index);
+            console.log(mod);
             data.push(mod);
         }
     }
