@@ -1,9 +1,12 @@
+import calculateCS from './checksum.js';
 
 const rmc = (input) => {
     let message = input.toString();
     if (message.length == 0) {
         return;
     }
+
+    let cs = calculateCS(input);
 
     const RecommendedMinimum ={
         speaker: "GP",
@@ -39,7 +42,7 @@ const rmc = (input) => {
     
     let stringifyRMC = JSON.stringify(RecommendedMinimum);
 
-    return stringifyRMC;
+    return stringifyRMC + cs;
 
 };
 

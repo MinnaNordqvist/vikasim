@@ -1,10 +1,14 @@
+import calculateCS from './checksum.js';
+
 
 const hdt = (input) => {
     let message = input.toString();
     if (message.length == 0) {
         return;
     }
-  
+
+    let cs = calculateCS(input);
+
     const headingTrue = {
         speaker: "GP",
     };
@@ -21,7 +25,7 @@ const hdt = (input) => {
     
     let stringifyHDT = JSON.stringify(headingTrue);
 
-    return stringifyHDT;
+    return stringifyHDT + cs;
 };
 
 export default hdt;

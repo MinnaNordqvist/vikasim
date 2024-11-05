@@ -3,6 +3,7 @@ import readline from 'node:readline';
 import hdt from './hooks/HDT.js';
 import rpm from './hooks/RPM.js';
 import rmc from './hooks/RMC.js';
+import calculateCS from './hooks/checksum.js'
 var data = [];
 var HDT = [];
 var RPM = [];
@@ -33,17 +34,9 @@ await processLineByLine();
 console.log("Hello world!");
 
 let sentence = '$GPVHW,,T,347.9,M,50.3,N,93.2,K*6B';
+let cs = calculateCS(sentence);
 
-let sliced = sentence.slice(1,31);
-console.log(sliced);
-
-// Lasketaan Cheksum. Arvo palautuu dec lukuna, joka muunnetaan hexaksi.  
-var checksum = 0;
-for(var i = 0; i < sliced.length; i++) {
-  checksum = checksum ^ sliced.charCodeAt(i);
-}
-
-console.log("Checksum: " + checksum.toString(16).toUpperCase());
+console.log(cs);
 
 
 let message = "";
@@ -51,7 +44,7 @@ for (var i = 0; i < data.length; i++){
     if (data[i].match("HDT")){
         message = hdt(data[i]);
         HDT.push(message);
-        //console.log(message);
+       // console.log(message);
     }
     if (data[i].match("RPM")){
         message = rpm(data[i]);
@@ -61,7 +54,7 @@ for (var i = 0; i < data.length; i++){
     if (data[i].match("RMC")){
         message = rmc(data[i]);
         RMC.push(message);
-        //console.log(message);
+       // console.log(message);
     }
 }
 

@@ -1,9 +1,13 @@
+import calculateCS from './checksum.js';
+
 
 const rpm = (input) => {
     let message = input.toString();
     if (message.length == 0) {
         return;
     }
+
+    let cs = calculateCS(input);
 
     const RevolutionsPerMinute = {
         speaker: "GP",
@@ -27,7 +31,7 @@ const rpm = (input) => {
 
     let stringifyRPM = JSON.stringify(RevolutionsPerMinute);
 
-    return stringifyRPM;
+    return stringifyRPM + cs;
 };
 
 export default rpm;
