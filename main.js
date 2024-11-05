@@ -4,6 +4,7 @@ import hdt from './hooks/HDT.js';
 import rpm from './hooks/RPM.js';
 import rmc from './hooks/RMC.js';
 import calculateCS from './hooks/checksum.js'
+import { verifyCS } from './hooks/checksum.js';
 var data = [];
 var HDT = [];
 var RPM = [];
@@ -30,13 +31,12 @@ async function processLineByLine() {
 
 await processLineByLine();     
 
-
 console.log("Hello world!");
 
 let sentence = '$GPVHW,,T,347.9,M,50.3,N,93.2,K*6B';
 let cs = calculateCS(sentence);
-
-console.log(cs);
+let og = verifyCS(sentence);
+console.log(cs + " and " + og);
 
 
 let message = "";
@@ -44,7 +44,7 @@ for (var i = 0; i < data.length; i++){
     if (data[i].match("HDT")){
         message = hdt(data[i]);
         HDT.push(message);
-       // console.log(message);
+        //console.log(message);
     }
     if (data[i].match("RPM")){
         message = rpm(data[i]);
@@ -54,7 +54,7 @@ for (var i = 0; i < data.length; i++){
     if (data[i].match("RMC")){
         message = rmc(data[i]);
         RMC.push(message);
-       // console.log(message);
+        //console.log(message);
     }
 }
 

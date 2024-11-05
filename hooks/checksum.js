@@ -20,12 +20,20 @@ const calculateCS = (input) => {
     return hexa;
 };
 
-const verifyCS = (input) => {
+//Tarkistetaan onko viestin Checksum oikein
+export const verifyCS = (input) => {
     if (input == null) {
         return;
     }
+    
+    let og = input.slice(input.length - 2);
+    let cs = calculateCS(input);
+   
 
-
+    if(cs == og){
+        return true;
+    }
+    return false;
 };
 
 export default calculateCS;

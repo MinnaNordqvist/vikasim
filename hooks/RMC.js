@@ -1,4 +1,5 @@
 import calculateCS from './checksum.js';
+import { verifyCS } from './checksum.js';
 
 const rmc = (input) => {
     let message = input.toString();
@@ -7,6 +8,7 @@ const rmc = (input) => {
     }
 
     let cs = calculateCS(input);
+    let csVerify = verifyCS(input);
 
     const RecommendedMinimum ={
         speaker: "GP",
@@ -42,7 +44,7 @@ const rmc = (input) => {
     
     let stringifyRMC = JSON.stringify(RecommendedMinimum);
 
-    return stringifyRMC + cs;
+    return stringifyRMC + cs + " " + csVerify;
 
 };
 

@@ -1,5 +1,5 @@
 import calculateCS from './checksum.js';
-
+import { verifyCS } from './checksum.js';
 
 const hdt = (input) => {
     let message = input.toString();
@@ -8,6 +8,7 @@ const hdt = (input) => {
     }
 
     let cs = calculateCS(input);
+    let csVerify = verifyCS(input);
 
     const headingTrue = {
         speaker: "GP",
@@ -25,7 +26,7 @@ const hdt = (input) => {
     
     let stringifyHDT = JSON.stringify(headingTrue);
 
-    return stringifyHDT + cs;
+    return stringifyHDT + cs + " " + csVerify;
 };
 
 export default hdt;

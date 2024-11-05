@@ -1,5 +1,5 @@
 import calculateCS from './checksum.js';
-
+import { verifyCS } from './checksum.js';
 
 const rpm = (input) => {
     let message = input.toString();
@@ -8,6 +8,7 @@ const rpm = (input) => {
     }
 
     let cs = calculateCS(input);
+    let csVerify = verifyCS(input);
 
     const RevolutionsPerMinute = {
         speaker: "GP",
@@ -31,7 +32,7 @@ const rpm = (input) => {
 
     let stringifyRPM = JSON.stringify(RevolutionsPerMinute);
 
-    return stringifyRPM + cs;
+    return stringifyRPM + cs + " " + csVerify;
 };
 
 export default rpm;
