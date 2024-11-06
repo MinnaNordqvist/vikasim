@@ -2,6 +2,7 @@ import fs from 'node:fs';
 import readline from 'node:readline';
 import hdt from './hooks/HDT.js';
 import rpm from './hooks/RPM.js';
+import { modifyRPM } from './hooks/RPM.js';
 import rmc from './hooks/RMC.js';
 import calculateCS from './hooks/checksum.js'
 import { verifyCS } from './hooks/checksum.js';
@@ -22,7 +23,7 @@ async function processLineByLine() {
         if (line != ""){
             let index = line.indexOf("$");
             var mod = line.slice(index);
-            console.log(mod);
+            //console.log(mod);
             data.push(mod);
         }
     }
@@ -35,12 +36,13 @@ await processLineByLine();
 console.log("Hello world!");
 
 let sentence = '$GPVHW,,T,347.9,M,50.3,N,93.2,K*6B';
-let cs = calculateCS(sentence);
+
 let og = verifyCS(sentence);
-console.log(cs + " and " + og);
+console.log(og);
 
-
+let cs = 0;
 let message = "";
+let modified = "";
 for (var i = 0; i < data.length; i++){
     if (data[i].match("HDT")){
         message = hdt(data[i]);
@@ -49,8 +51,13 @@ for (var i = 0; i < data.length; i++){
     }
     if (data[i].match("RPM")){
         message = rpm(data[i]);
+        console.log(message);
         RPM.push(message);
-        //console.log(message);
+        modified = modifyRPM(data[i]);
+        //cs = verifyCS(data[i]);
+        //console.log(data[i] + " real " + cs);
+        console.log(modified);
+        
     }
     if (data[i].match("RMC")){
         message = rmc(data[i]);

@@ -7,7 +7,6 @@ const hdt = (input) => {
         return;
     }
 
-    let cs = calculateCS(input);
     let csVerify = verifyCS(input);
 
     const headingTrue = {
@@ -26,7 +25,7 @@ const hdt = (input) => {
     
     let stringifyHDT = JSON.stringify(headingTrue);
 
-    return stringifyHDT + cs + " " + csVerify;
+    return stringifyHDT + csVerify;
 };
 
 export default hdt;

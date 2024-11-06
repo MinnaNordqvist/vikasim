@@ -1,15 +1,14 @@
 
 //Lasketaan viestille checksum ja muunnetaan se hexaksi
 const calculateCS = (input) => {
+    let checksum = 0;
+    
     if (input == null){
         return;
     }
     
-    let checksum = 0;
-    let sliced = input.slice(1, -3);
-    
-    for(var i = 0; i < sliced.length; i++) {
-        checksum = checksum ^ sliced.charCodeAt(i);
+    for(var i = 0; i < input.length; i++) {
+        checksum = checksum ^ input.charCodeAt(i);
       }
 
     let hexa = checksum.toString(16).toUpperCase();
@@ -27,9 +26,9 @@ export const verifyCS = (input) => {
     }
     
     let og = input.slice(input.length - 2);
-    let cs = calculateCS(input);
+    let sliced = input.slice(1, -3);
+    let cs = calculateCS(sliced);
    
-
     if(cs == og){
         return true;
     }

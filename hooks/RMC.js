@@ -7,7 +7,7 @@ const rmc = (input) => {
         return;
     }
 
-    let cs = calculateCS(input);
+    
     let csVerify = verifyCS(input);
 
     const RecommendedMinimum ={
@@ -44,7 +44,7 @@ const rmc = (input) => {
     
     let stringifyRMC = JSON.stringify(RecommendedMinimum);
 
-    return stringifyRMC + cs + " " + csVerify;
+    return stringifyRMC + csVerify;
 
 };
 
