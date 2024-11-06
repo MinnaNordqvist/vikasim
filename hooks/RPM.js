@@ -9,8 +9,7 @@ const rpm = (input) => {
     }
     
     let csVerify = verifyCS(input);
-    let mes = input.slice(1);
-    let iterate = mes.split(',');
+    let iterate = message.split(',');
     const RevolutionsPerMinute = {
         speaker: "GP",
     };
@@ -20,10 +19,9 @@ const rpm = (input) => {
     const speed = "RPM";
     const propellerPitchRate = "max";
     const checksum = "cheksum";
-
     
     Object.assign(RevolutionsPerMinute, {
-        [sentence] : iterate[0].slice(2),
+        [sentence] : iterate[0].slice(3),
         [source] : iterate[1],
         [sourceNumber] : iterate[2],
         [speed] : iterate[3],
@@ -49,9 +47,8 @@ export const modifyRPM = (input) => {
     let almost = iterate.toString();
     let cs = calculateCS(almost);
     let modified = "$"+almost+"*"+cs;
-    let csVerify = verifyCS(modified);
-    
-    return modified + " " + csVerify;
+        
+    return modified;
 } 
 
 export default rpm;

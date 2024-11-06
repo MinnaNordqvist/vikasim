@@ -1,6 +1,7 @@
 import calculateCS from './checksum.js';
 import { verifyCS } from './checksum.js';
 
+//HDT = Heading True. $GPHDT,HEADING_DEGRESS,T*hh
 const hdt = (input) => {
     let message = input.toString();
     if (message.length == 0) {

@@ -1,13 +1,14 @@
 import calculateCS from './checksum.js';
 import { verifyCS } from './checksum.js';
 
+//RCM = Recommended Minimum. 
+//$GPRMC,UTC_TIME,STATUS,LATITUDE,N/S,LONGITUDE,E/W,SPEED_KNOTS,DEGREES_TRUE,DATE,DEGREES_MAGNETIC,E/W,FAA*hh
 const rmc = (input) => {
     let message = input.toString();
     if (message.length == 0) {
         return;
     }
 
-    
     let csVerify = verifyCS(input);
 
     const RecommendedMinimum ={

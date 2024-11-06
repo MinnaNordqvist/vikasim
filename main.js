@@ -13,7 +13,7 @@ var RMC = [];
 
 //Luetaan datasetti, poistetaan tyhjät välit ja ylimääräinen tieto. Tallennetaan Arrayn.
 async function processLineByLine() {
-    const filestream = fs.createReadStream('./data/nmea0183.dat');
+    const filestream = fs.createReadStream('./data/nmea018322.dat');
     const rl = readline.createInterface({
         input: filestream,
         crlfDelay: Infinity,
@@ -35,12 +35,6 @@ await processLineByLine();
 
 console.log("Hello world!");
 
-let sentence = '$GPVHW,,T,347.9,M,50.3,N,93.2,K*6B';
-
-let og = verifyCS(sentence);
-console.log(og);
-
-let cs = 0;
 let message = "";
 let modified = "";
 for (var i = 0; i < data.length; i++){
@@ -50,14 +44,12 @@ for (var i = 0; i < data.length; i++){
         //console.log(message);
     }
     if (data[i].match("RPM")){
-        message = rpm(data[i]);
-        console.log(message);
-        RPM.push(message);
+        //console.log(data[i] + " real");
         modified = modifyRPM(data[i]);
-        //cs = verifyCS(data[i]);
-        //console.log(data[i] + " real " + cs);
-        console.log(modified);
-        
+        //console.log(modified);
+        message = rpm(data[i]);
+        RPM.push(message);
+       //console.log(message);
     }
     if (data[i].match("RMC")){
         message = rmc(data[i]);
