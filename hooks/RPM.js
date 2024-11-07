@@ -1,7 +1,8 @@
 import calculateCS from './checksum.js';
 import { verifyCS } from './checksum.js';
 
-//RPM = Revolutions Per Minute. $GPRPM,SOURCE,SOURCE_NUMBER,SPEED_RPM,PROPELLER_PITCH_RATE*hh 
+//RPM = Revolutions Per Minute. $GPRPM,S/E,SOURCE_NUMBER,SPEED_RPM,PROPELLER_PITCH_RATE,STATUS*hh 
+//Huom: datasetissä viestistä puuttuu viimeinen arvo STATUS.
 const rpm = (input) => {
     let message = input.toString();
     if (message.length == 0) {

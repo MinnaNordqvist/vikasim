@@ -1,9 +1,8 @@
 import calculateCS from './checksum.js';
 import { verifyCS } from './checksum.js';
 
-//DPT = Depth. $GPDPT,METRES,OFFSET_METRES,MAXIMUM_METRES*hh
-//Huom: Datasetissä viestiin lisätty arvo T ennen checksumia.
-const dpt = (input) => {
+//VHW = Water Speed and Heading. $GPVHW,HEADING_DEGRESS_TRUE,T,HEADING_DEG_MAGNETIC,M,SPEED_KNOTS,N,SPEED_KMH,K*hh
+const vhw = (input) => {
     let message = input.toString();
     if (message.length == 0) {
         return "No input";
@@ -14,4 +13,4 @@ const dpt = (input) => {
     return message + " " + csVerify;
 }
 
-export default dpt;
+export default vhw;
