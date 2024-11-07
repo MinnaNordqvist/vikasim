@@ -1,5 +1,6 @@
 import fs from 'node:fs';
 import readline from 'node:readline';
+import dpt from "./hooks/DPT.js"
 import hdt from './hooks/HDT.js';
 import rpm from './hooks/RPM.js';
 import { modifyRPM } from './hooks/RPM.js';
@@ -13,7 +14,7 @@ var RMC = [];
 
 //Luetaan datasetti, poistetaan tyhjät välit ja ylimääräinen tieto. Tallennetaan Arrayn.
 async function processLineByLine() {
-    const filestream = fs.createReadStream('./data/nmea0183.dat');
+    const filestream = fs.createReadStream('./data/nmea018322.dat');
     const rl = readline.createInterface({
         input: filestream,
         crlfDelay: Infinity,
@@ -49,9 +50,9 @@ for (var i = 0; i < data.length; i++){
         //console.log(message);
     }
     if (data[i].match("RPM")){
-        console.log(data[i] + " real");
+       // console.log(data[i] + " real");
         modified = modifyRPM(data[i], 10);
-        console.log(modified);
+       // console.log(modified);
         message = rpm(data[i]);
         RPM.push(message);
        //console.log(message);
@@ -60,6 +61,10 @@ for (var i = 0; i < data.length; i++){
         message = rmc(data[i]);
         RMC.push(message);
         //console.log(message);
+    }
+    if (data[i].match("DPT")){
+        message = dpt(data[i]);
+        console.log(message);
     }
 }
 
