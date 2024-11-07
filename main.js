@@ -18,17 +18,22 @@ async function processLineByLine() {
         input: filestream,
         crlfDelay: Infinity,
     });
-  
-    for await (const line of rl) {
-        if (line != ""){
-            let index = line.indexOf("$");
-            var mod = line.slice(index);
-            //console.log(mod);
-            data.push(mod);
+    
+    try {
+        for await (const line of rl) {
+            if (line != ""){
+                let index = line.indexOf("$");
+                var mod = line.slice(index);
+                //console.log(mod);
+                data.push(mod);
+            }
         }
+        console.log("Data length: " + data.length);
+        return data;
+    } catch (error) {
+        console.log(error);
+        throw error;
     }
-    console.log("Data length: " + data.length);
-    return data;
 } 
 
 await processLineByLine();     
