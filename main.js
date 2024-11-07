@@ -13,7 +13,7 @@ var RMC = [];
 
 //Luetaan datasetti, poistetaan tyhjät välit ja ylimääräinen tieto. Tallennetaan Arrayn.
 async function processLineByLine() {
-    const filestream = fs.createReadStream('./data/nmea018322.dat');
+    const filestream = fs.createReadStream('./data/nmea0183.dat');
     const rl = readline.createInterface({
         input: filestream,
         crlfDelay: Infinity,
@@ -44,9 +44,9 @@ for (var i = 0; i < data.length; i++){
         //console.log(message);
     }
     if (data[i].match("RPM")){
-        //console.log(data[i] + " real");
-        modified = modifyRPM(data[i]);
-        //console.log(modified);
+        console.log(data[i] + " real");
+        modified = modifyRPM(data[i], 10);
+        console.log(modified);
         message = rpm(data[i]);
         RPM.push(message);
        //console.log(message);

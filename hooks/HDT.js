@@ -5,7 +5,7 @@ import { verifyCS } from './checksum.js';
 const hdt = (input) => {
     let message = input.toString();
     if (message.length == 0) {
-        return;
+        return "No input";
     }
 
     let csVerify = verifyCS(input);

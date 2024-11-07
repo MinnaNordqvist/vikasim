@@ -5,7 +5,7 @@ import { verifyCS } from './checksum.js';
 const rpm = (input) => {
     let message = input.toString();
     if (message.length == 0) {
-        return;
+        return "No input";
     }
     
     let csVerify = verifyCS(input);
@@ -34,16 +34,23 @@ const rpm = (input) => {
     return stringifyRPM + csVerify;
 };
 
-//Lisätään 10% kierroslukuun, lasketaan uusi checksum, palautetaan muutetu viesti
-export const modifyRPM = (input) => {
+//Lisätään parametrin prosenttimuutos kierroslukuun, lasketaan uusi checksum, palautetaan muutetu viesti
+export const modifyRPM = (input, change) => {
+    let modifyer = 1;
     let message = input.toString();
     if (message.length == 0) {
-        return;
+        return "No input found";
     }
-    
+    if (change == null){
+        return "Rate not defined"
+    }
+    if (change != 0) {
+        modifyer = ((100 + change)/100).toFixed(2);
+    }
+
     let mod = message.slice(1, -3);
     let iterate = mod.split(',');
-    iterate[3] = (iterate[3] * 1.10).toFixed(1);
+    iterate[3] = (iterate[3] * modifyer).toFixed(1);
     let almost = iterate.toString();
     let cs = calculateCS(almost);
     let modified = "$"+almost+"*"+cs;
