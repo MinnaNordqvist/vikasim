@@ -6,6 +6,7 @@ import rpm from './hooks/RPM.js';
 import { modifyRPM } from './hooks/RPM.js';
 import rmc from './hooks/RMC.js';
 import rot from './hooks/ROT.js'
+import rsa from './hooks/RSA.js';
 import calculateCS from './hooks/checksum.js'
 import { verifyCS } from './hooks/checksum.js';
 var data = [];
@@ -15,7 +16,7 @@ var RMC = [];
 
 //Luetaan datasetti, poistetaan tyhjät välit ja ylimääräinen tieto. Tallennetaan Arrayn.
 async function processLineByLine() {
-    const filestream = fs.createReadStream('./data/nmea0183.dat');
+    const filestream = fs.createReadStream('./data/nmea018322.dat');
     const rl = readline.createInterface({
         input: filestream,
         crlfDelay: Infinity,
@@ -69,6 +70,10 @@ for (var i = 0; i < data.length; i++){
     }
     if (data[i].match("ROT")){
         message = rot(data[i]);
+        //console.log(message);
+    }
+    if (data[i].match("RSA")){
+        message = rsa(data[i]);
         console.log(message);
     }
 }
