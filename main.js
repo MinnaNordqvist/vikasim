@@ -6,12 +6,11 @@ import rpm from './hooks/RPM.js';
 import { modifyRPM } from './hooks/RPM.js';
 import rmc from './hooks/RMC.js';
 import { modifyRMCspeed } from './hooks/RMC.js';
+import { locationLostRMC } from './hooks/RMC.js';
 import rot from './hooks/ROT.js'
 import rsa from './hooks/RSA.js';
 import vhw from './hooks/VHW.js';
 import { modifyVHW } from './hooks/VHW.js';
-import calculateCS from './hooks/checksum.js'
-import { verifyCS } from './hooks/checksum.js';
 var data = [];
 
 //Luetaan datasetti, poistetaan tyhjät välit ja ylimääräinen tieto. Tallennetaan Arrayn.
@@ -45,6 +44,7 @@ console.log("Hello world!");
 
 let message = "";
 let modified = "";
+let modifyMore = "";
 for (var i = 0; i < data.length; i++){
        
     if (data[i].match("HDT")){
@@ -60,8 +60,10 @@ for (var i = 0; i < data.length; i++){
     if (data[i].match("RMC")){
         message = rmc(data[i]);
         console.log(message);
+        modifyMore = locationLostRMC(data[i]);
+        console.log(modifyMore);
         modified = modifyRMCspeed(data[i], 10);
-        console.log(modified);
+       // console.log(modified);
     }
     if (data[i].match("DPT")){
         message = dpt(data[i]);

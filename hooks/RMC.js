@@ -42,5 +42,22 @@ export const modifyRMCspeed = (input, change) => {
 
 }
 
+//Otetaan sijainti pois käytöstä korvaamalla LATITUDE ja LONGITUDE arvolla null, lasketaan uusi checksum ja palautetaan muutettu viesti
+export const locationLostRMC = (input) => {
+    let message = input.toString();
+    if (message.length == 0) {
+        return "No input found";
+    }
+    let mod = message.slice(1, -3);
+    let iterate = mod.split(',');
+    iterate[3] = null;
+    iterate[5] = null;    
+    let almost = iterate.toString();
+    let cs = calculateCS(almost);
+    let modified = "$"+almost+"*"+cs;
+        
+    return modified;
+
+}
 
 export default rmc;
