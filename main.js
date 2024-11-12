@@ -5,6 +5,7 @@ import hdt from './hooks/HDT.js';
 import rpm from './hooks/RPM.js';
 import { modifyRPM } from './hooks/RPM.js';
 import rmc from './hooks/RMC.js';
+import { modifyRMCspeed } from './hooks/RMC.js';
 import rot from './hooks/ROT.js'
 import rsa from './hooks/RSA.js';
 import vhw from './hooks/VHW.js';
@@ -12,9 +13,6 @@ import { modifyVHW } from './hooks/VHW.js';
 import calculateCS from './hooks/checksum.js'
 import { verifyCS } from './hooks/checksum.js';
 var data = [];
-var HDT = [];
-var RPM = [];
-var RMC = [];
 
 //Luetaan datasetti, poistetaan tyhjät välit ja ylimääräinen tieto. Tallennetaan Arrayn.
 async function processLineByLine() {
@@ -51,22 +49,19 @@ for (var i = 0; i < data.length; i++){
        
     if (data[i].match("HDT")){
         message = hdt(data[i]);
-        HDT.push(message);
         //console.log(message);
     }
     if (data[i].match("RPM")){
-       // console.log(data[i] + " real");
+        message = rpm(data[i]);
+        //console.log(message);
         modified = modifyRPM(data[i], 10);
        // console.log(modified);
-        message = rpm(data[i]);
-        RPM.push(message);
-       //console.log(message);
     }
     if (data[i].match("RMC")){
-       // console.log(data[i]);
         message = rmc(data[i]);
-        RMC.push(message);
-        //console.log(message);
+        console.log(message);
+        modified = modifyRMCspeed(data[i], 10);
+        console.log(modified);
     }
     if (data[i].match("DPT")){
         message = dpt(data[i]);
@@ -81,11 +76,11 @@ for (var i = 0; i < data.length; i++){
         //console.log(message);
     }
     if (data[i].match("VHW")) {
-        console.log(data[i] + " real");
-        modified = modifyVHW(data[i], 10);
-        console.log(modified);
         message = vhw(data[i]);
        // console.log(message);
+        modified = modifyVHW(data[i], 10);
+       // console.log(modified);
+       
     }
 }
 

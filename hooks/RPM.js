@@ -2,7 +2,9 @@ import calculateCS from './checksum.js';
 import { verifyCS } from './checksum.js';
 
 //RPM = Revolutions Per Minute. $GPRPM,S/E,SOURCE_NUMBER,SPEED_RPM,PROPELLER_PITCH_RATE,STATUS*hh 
+//Esim. $GPRPM,E,0,5350.0,100*01
 //Huom: datasetissä viestistä puuttuu viimeinen arvo STATUS.
+
 const rpm = (input) => {
     let message = input.toString();
     if (message.length == 0) {
@@ -10,29 +12,8 @@ const rpm = (input) => {
     }
     
     let csVerify = verifyCS(input);
-    let iterate = message.split(',');
-    const RevolutionsPerMinute = {
-        speaker: "GP",
-    };
-    const sentence = "sentence";
-    const source = "source";
-    const sourceNumber = "sourceNumber";
-    const speed = "RPM";
-    const propellerPitchRate = "max";
-    const checksum = "cheksum";
     
-    Object.assign(RevolutionsPerMinute, {
-        [sentence] : iterate[0].slice(3),
-        [source] : iterate[1],
-        [sourceNumber] : iterate[2],
-        [speed] : iterate[3],
-        [propellerPitchRate] : iterate[4].slice[-3],
-        [checksum] : iterate[4].slice(4),  
-    });
-
-    let stringifyRPM = JSON.stringify(RevolutionsPerMinute);
-
-    return stringifyRPM + csVerify;
+    return message + " " + csVerify;
 };
 
 //Lisätään parametrin prosenttimuutos kierroslukuun, lasketaan uusi checksum, palautetaan muutetu viesti
