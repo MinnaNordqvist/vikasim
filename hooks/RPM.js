@@ -35,7 +35,7 @@ export const modifyRPM = (input, change) => {
     iterate[3] = (iterate[3] * modifyer).toFixed(1);
     let almost = iterate.toString();
     let cs = calculateCS(almost);
-    let modified = "$"+almost+"*"+cs;
+    let modified = "$"+almost+"*"+cs+"\r\n";
         
     return modified;
 } 

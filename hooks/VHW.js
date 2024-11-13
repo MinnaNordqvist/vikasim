@@ -34,7 +34,7 @@ export const modifyVHW = (input, change) => {
     iterate[7] = (iterate[7] * modifyer).toFixed(1);
     let almost = iterate.toString();
     let cs = calculateCS(almost);
-    let modified = "$"+almost+"*"+cs;
+    let modified = "$"+almost+"*"+cs+"\r\n";
     return modified;
 }
 
