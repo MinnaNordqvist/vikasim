@@ -7,8 +7,8 @@ import { verifyCS } from './checksum.js';
 
 const rpm = (input) => {
     let message = input.toString();
-    if (message.length == 0) {
-        return "No input";
+    if (message.length == 0 || !message.match("RPM")) {
+        return "Invalid input";
     }
     
     let csVerify = verifyCS(input);
@@ -20,10 +20,10 @@ const rpm = (input) => {
 export const modifyRPM = (input, change) => {
     let modifyer = 1;
     let message = input.toString();
-    if (message.length == 0) {
-        return "No input found";
+    if (message.length == 0 || !message.match("RPM")) {
+        return "Invalid input";
     }
-    if (change == null){
+    if (change == null || typeof change != 'number'){
         return "Rate not defined"
     }
     if (change != 0) {

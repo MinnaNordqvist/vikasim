@@ -6,8 +6,8 @@ import { verifyCS } from './checksum.js';
 
 const rsa = (input) => {
     let message = input.toString();
-    if (message.length == 0) {
-        return "No input";
+    if (message.length == 0 || !message.match("RSA")) {
+        return "Invalid input";
     }
     
     let csVerify = verifyCS(input);

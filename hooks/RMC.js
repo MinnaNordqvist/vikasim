@@ -6,8 +6,8 @@ import { verifyCS } from './checksum.js';
 //Esim. $GPRMC,122332.58,A,5959.966064,N,02435.708935,E,40.3,337.1,281024,,,A*67
 const rmc = (input) => {
     let message = input.toString();
-    if (message.length == 0) {
-        return "No input";
+    if (message.length == 0 || !message.match("RMC")) {
+        return "Invalid input";
     }
 
     let csVerify = verifyCS(input);
@@ -21,10 +21,10 @@ const rmc = (input) => {
 export const modifyRMCspeed = (input, change) => {
     let modifyer = 1;
     let message = input.toString();
-    if (message.length == 0) {
-        return "No input found";
+    if (message.length == 0 || !message.match("RMC")) {
+        return "Invalid input";
     }
-    if (change == null){
+    if (change == null || typeof change != 'number'){
         return "Rate not defined"
     }
     if (change != 0) {
@@ -45,8 +45,8 @@ export const modifyRMCspeed = (input, change) => {
 //Otetaan sijainti pois käytöstä korvaamalla LATITUDE ja LONGITUDE arvolla null, lasketaan uusi checksum ja palautetaan muutettu viesti
 export const locationLostRMC = (input) => {
     let message = input.toString();
-    if (message.length == 0) {
-        return "No input found";
+    if (message.length == 0 || !message.match("RMC")) {
+        return "Invalid input";
     }
     let mod = message.slice(1, -3);
     let iterate = mod.split(',');

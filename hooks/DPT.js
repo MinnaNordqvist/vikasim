@@ -6,8 +6,8 @@ import { verifyCS } from './checksum.js';
 //Huom: Datasetissä viestiin lisätty arvo T ennen checksumia.
 const dpt = (input) => {
     let message = input.toString();
-    if (message.length == 0) {
-        return "No input";
+    if (message.length == 0 || !message.match("DPT")) {
+        return "Invalid input";
     }
     
     let csVerify = verifyCS(input);

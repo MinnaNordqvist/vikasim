@@ -5,8 +5,8 @@ import { verifyCS } from './checksum.js';
 //Esim. $GPVHW,,T,331.7,M,47.2,N,87.4,K*60
 const vhw = (input) => {
     let message = input.toString();
-    if (message.length == 0) {
-        return "No input";
+    if (message.length == 0 || !message.match("VHW")) {
+        return "Invalid input";
     }
     
     let csVerify = verifyCS(input);
@@ -18,10 +18,10 @@ const vhw = (input) => {
 export const modifyVHW = (input, change) => {
     let modifyer = 1;
     let message = input.toString();
-    if (message.length == 0) {
-        return "No input found";
+    if (message.length == 0 || !message.match("VHW")) {
+        return "Invalid input";
     }
-    if (change == null){
+    if (change == null || typeof change != 'number'){
         return "Rate not defined"
     }
     if (change != 0) {
