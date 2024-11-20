@@ -1,3 +1,5 @@
+//Simple TCP Client and Server in Node.js (Covering all useful Properties & Methods)
+//by Siddhesh Rane
 import net from 'node:net';
 
 var server = net.createServer();
@@ -112,6 +114,18 @@ server.maxConnections = 10;
   
 //static port allocation
 server.listen(2222);
+
+// for dyanmic port allocation
+server.listen(function(){
+  var address = server.address();
+  var port = address.port;
+  var family = address.family;
+  var ipaddr = address.address;
+  console.log('Server is listening at port' + port);
+  console.log('Server ip :' + ipaddr);
+  console.log('Server is IP4/IP6 : ' + family);
+});
+
 
 var islistening = server.listening;
 
