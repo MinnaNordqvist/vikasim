@@ -1,2 +1,5 @@
 #Ignore files in data directory
 data/
+
+#Ignore files in modules
+modules/
