@@ -1,13 +1,8 @@
 import fs from 'node:fs';
-import readline from 'node:readline';
-import { writeFile, appendFile} from 'node:fs';
-import { Readable } from 'node:stream';
 import net from 'node:net';
-import stream from 'node:stream';
-import assert from 'node:assert';
 import { locationLostRMC } from './hooks/RMC.js';
 
-const data = [];
+
 let server, istream = fs.createReadStream("./data/data.txt");
 //Luodaan serveri
 server = net.createServer((socket) => {
@@ -79,7 +74,6 @@ client.setEncoding('utf8');
 client.on('data', (data) =>{
     let res="";
     let message = "";
-    let mod = "";
     for (const chunk of data){
         res += chunk;
     }
