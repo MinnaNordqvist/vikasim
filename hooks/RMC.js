@@ -58,7 +58,7 @@ export const locationLostRMC = (input) => {
     iterate[5] = null;    
     let almost = iterate.toString();
     let cs = calculateCS(almost);
-    let modified = "$"+almost+"*"+cs+"\r\n";
+    let modified = "$"+almost+"*"+cs;
         
     return modified;
 

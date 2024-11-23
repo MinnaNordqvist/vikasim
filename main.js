@@ -83,12 +83,8 @@ client.on('data', (data) =>{
     for (const chunk of data){
         res += chunk;
     }
-    message = res.split("\r\n");
-    for (var i = 0; i < message.length - 1; i++){
-        mod = locationLostRMC(message[i]+"\r\n");
-        client.write(mod);
-        
-    }
+    message = res.split("\r\n").filter(a => !!a).map(locationLostRMC).join("\r\n");
+    client.write(message);
     
 });      
 
