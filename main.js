@@ -1,8 +1,10 @@
 import fs from 'node:fs';
 import readline from 'node:readline';
 import { writeFile, appendFile} from 'node:fs';
+import { Readable } from 'node:stream';
 import net from 'node:net';
-
+import stream from 'node:stream';
+import assert from 'node:assert';
 import { locationLostRMC } from './hooks/RMC.js';
 
 const data = [];
@@ -72,33 +74,26 @@ var client  = net.connect({port: 2222, host:""}, function(){
    
 });
 
+
 client.setEncoding('utf8');
 client.on('data', (data) =>{
-    console.log(data);
+    let res="";
     let message = "";
-    if(data.match("RCM")){
-        message = locationLostRMC(data); 
-      //  client.write(message);
-        console.log(message);
+    let mod = "";
+    for (const chunk of data){
+        res += chunk;
     }
-   
-    // echo data
-    // var is_kernel_buffer_full = client.write(message);
-    // if(is_kernel_buffer_full){
-     
-   //  }else{
-   //   client.pause();
-   // }
- });
-
+    message = res.split("\r\n");
+    for (var i = 0; i < message.length - 1; i++){
+        mod = locationLostRMC(message[i]+"\r\n");
+        client.write(mod);
+        
+    }
     
+});      
 
 console.log("Hello world!");
 
 
 
- 
-//    if (data[i].match("RMC")){
-//        message = locationLostRMC(data[i]);
-//        client.write(message);
-//    };
+
