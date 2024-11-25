@@ -26,8 +26,8 @@ export const modifyVHW = (input, change) => {
    
     let modifyer = 1;
     let message = input.toString();
-    if (message.length == 0 || !message.match("VHW")) {
-        return "Invalid input";
+    if (!message.match("VHW")) {
+        return message;
     }
     if (change == null || typeof change != 'number'){
         return "Rate not defined"
@@ -42,7 +42,7 @@ export const modifyVHW = (input, change) => {
     iterate[7] = (iterate[7] * modifyer).toFixed(1);
     let almost = iterate.toString();
     let cs = calculateCS(almost);
-    let modified = "$"+almost+"*"+cs+"\r\n";
+    let modified = "$"+almost+"*"+cs;
     return modified;
 }
 

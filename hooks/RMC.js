@@ -28,8 +28,8 @@ export const modifyRMCspeed = (input, change) => {
 
     let modifyer = 1;
     let message = input.toString();
-    if (message.length == 0 || !message.match("RMC")) {
-        return "Invalid input";
+    if (!message.match("RMC")) {
+        return message;
     }
     if (change == null || typeof change != 'number'){
         return "Rate not defined"
@@ -43,7 +43,7 @@ export const modifyRMCspeed = (input, change) => {
     iterate[7] = (iterate[7] * modifyer).toFixed(1);
     let almost = iterate.toString();
     let cs = calculateCS(almost);
-    let modified = "$"+almost+"*"+cs+"\r\n";
+    let modified = "$"+almost+"*"+cs;
         
     return modified;
 
@@ -56,8 +56,8 @@ export const locationLostRMC = (input) => {
     }
     
     let message = input.toString();
-    if (message.length == 0 || !message.match("RMC")) {
-        return "Invalid input";
+    if (!message.match("RMC")) {
+        return message;
     }
     let mod = message.slice(1, -3);
     let iterate = mod.split(',');
@@ -65,7 +65,7 @@ export const locationLostRMC = (input) => {
     iterate[5] = null;    
     let almost = iterate.toString();
     let cs = calculateCS(almost);
-    let modified = "$"+almost+"*"+cs+"\r\n";
+    let modified = "$"+almost+"*"+cs;
         
     return modified;
 

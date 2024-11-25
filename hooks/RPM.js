@@ -9,7 +9,7 @@ const rpm = (input) => {
     if (input == null) {
         return "Invalid input";
     }
-    
+
     let message = input.toString();
     if (message.length == 0 || !message.match("RPM")) {
         return "Invalid input";
@@ -22,10 +22,14 @@ const rpm = (input) => {
 
 //Lisätään parametrin prosenttimuutos kierroslukuun, lasketaan uusi checksum, palautetaan muutetu viesti
 export const modifyRPM = (input, change) => {
+    if (input == null) {
+        return "Invalid input";
+    }
+    
     let modifyer = 1;
     let message = input.toString();
-    if (message.length == 0 || !message.match("RPM")) {
-        return "Invalid input";
+    if (!message.match("RPM")) {
+        return message;
     }
     if (change == null || typeof change != 'number'){
         return "Rate not defined"
@@ -39,7 +43,7 @@ export const modifyRPM = (input, change) => {
     iterate[3] = (iterate[3] * modifyer).toFixed(1);
     let almost = iterate.toString();
     let cs = calculateCS(almost);
-    let modified = "$"+almost+"*"+cs+"\r\n";
+    let modified = "$"+almost+"*"+cs;
         
     return modified;
 } 
