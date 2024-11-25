@@ -6,6 +6,10 @@ import { verifyCS } from './checksum.js';
 //Huom: datasetissä viestistä puuttuu viimeinen arvo STATUS.
 
 const rpm = (input) => {
+    if (input == null) {
+        return "Invalid input";
+    }
+    
     let message = input.toString();
     if (message.length == 0 || !message.match("RPM")) {
         return "Invalid input";

@@ -1,10 +1,13 @@
 import calculateCS from './checksum.js';
 import { verifyCS } from './checksum.js';
 
-//RCM = Recommended Minimum. 
+//RMC = Recommended Minimum. 
 //$GPRMC,UTC_TIME,STATUS,LATITUDE,N/S,LONGITUDE,E/W,SPEED_KNOTS,DEGREES_TRUE,DATE,DEGREES_MAGNETIC,E/W,FAA*hh
 //Esim. $GPRMC,122332.58,A,5959.966064,N,02435.708935,E,40.3,337.1,281024,,,A*67
 const rmc = (input) => {
+    if (input == null) {
+        return "Invalid input";
+    }
     let message = input.toString();
     if (message.length == 0 || !message.match("RMC")) {
         return "Invalid input";
@@ -19,6 +22,10 @@ const rmc = (input) => {
 
 //Lisätään parametrin prosenttiluku nopeuteen (SPEED_KNOTS), lasketaan uusi cheksum, palautetaan muutettu viesti
 export const modifyRMCspeed = (input, change) => {
+    if (input == null) {
+        return "Invalid input";
+    }
+
     let modifyer = 1;
     let message = input.toString();
     if (message.length == 0 || !message.match("RMC")) {
@@ -44,6 +51,10 @@ export const modifyRMCspeed = (input, change) => {
 
 //Otetaan sijainti pois käytöstä korvaamalla LATITUDE ja LONGITUDE arvolla null, lasketaan uusi checksum ja palautetaan muutettu viesti
 export const locationLostRMC = (input) => {
+    if (input == null) {
+        return "Invalid input";
+    }
+    
     let message = input.toString();
     if (message.length == 0 || !message.match("RMC")) {
         return "Invalid input";

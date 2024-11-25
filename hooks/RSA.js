@@ -5,6 +5,10 @@ import { verifyCS } from './checksum.js';
 //Esim. $GPRSA,12.6,A,12.6,A*57
 
 const rsa = (input) => {
+    if (input == null) {
+        return "Invalid input";
+    }
+    
     let message = input.toString();
     if (message.length == 0 || !message.match("RSA")) {
         return "Invalid input";
