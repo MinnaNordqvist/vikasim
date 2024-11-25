@@ -1,7 +1,7 @@
 import calculateCS from './checksum.js';
 import { verifyCS } from './checksum.js';
 
-//RCM = Recommended Minimum. 
+//RMC = Recommended Minimum. 
 //$GPRMC,UTC_TIME,STATUS,LATITUDE,N/S,LONGITUDE,E/W,SPEED_KNOTS,DEGREES_TRUE,DATE,DEGREES_MAGNETIC,E/W,FAA*hh
 //Esim. $GPRMC,122332.58,A,5959.966064,N,02435.708935,E,40.3,337.1,281024,,,A*67
 const rmc = (input) => {
