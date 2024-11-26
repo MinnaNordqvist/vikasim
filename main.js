@@ -47,7 +47,7 @@ server.on('connection', (socket) =>{
 });
 
 
-server.listen(2222, () => {
+server.listen(() => {
     var address = server.address();
     console.log("opened server on %j", address);
 });
@@ -57,13 +57,13 @@ server.getConnections((error,count) =>{
 });
 
 //Luodaan client joka lähettää muokatut arvot eteenpäin.
-var client  = net.connect({port: 2222, host:""}, function(){
+var client  = net.connect({port: server.address().port, host:''}, function(){
     console.log('Client: connection established with server');
     var address = client.address();
     var port = address.port;
     var family = address.family;
     var ipaddr = address.address;
-    console.log('Client is listening to port ' + port);
+    console.log('Client port ' + port);
     console.log('Client ip ' + ipaddr);
     console.log('Client is IP4/IP6 : ' + family);
    

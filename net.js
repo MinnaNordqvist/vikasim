@@ -113,9 +113,9 @@ server.on('listening',function(){
 server.maxConnections = 10;
   
 //static port allocation
-server.listen(2222);
+//server.listen(2222);
 
-// for dyanmic port allocation
+// for dynamic port allocation
 server.listen(function(){
   var address = server.address();
   var port = address.port;
@@ -142,7 +142,7 @@ setTimeout(function(){
 
 var client  = new net.Socket();
 client.connect({
-  port:2222
+  port: server.address().port
 });
 
 client.on('connect',function(){
