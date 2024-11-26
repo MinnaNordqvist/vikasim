@@ -25,6 +25,7 @@ server = net.createServer((socket) => {
         }
     })
     istream.on("end", function(){
+        console.log("End of server data");
         socket.end();
     }) 
 });
@@ -57,7 +58,7 @@ server.on('connection', (socket) =>{
     });
 });
 
-server.listen(2222, () => {
+server.listen(8080, () => {
     var address = server.address();
     console.log("opened server on %j", address);
 });
@@ -67,7 +68,7 @@ server.getConnections((error,count) =>{
 });
 
 //Luodaan client joka lähettää muokatut arvot eteenpäin.
-var client  = net.connect({port: 2222, host:""}, function(){
+var client  = net.connect({port: 8080, host:"", }, function(){
     console.log('Client: connection established with server');
     var address = client.address();
     var port = address.port;
@@ -78,19 +79,44 @@ var client  = net.connect({port: 2222, host:""}, function(){
     console.log('Client is IP4/IP6 : ' + family);
    
 });
-
-
 client.setEncoding('utf8');
+
+
 client.on('data', (data) =>{
+    console.log("Got this much data: " + data.length);
+    console.log(client.bytesRead);
     let res="";
     let message = "";
+     
     for (const chunk of data){
         res += chunk;
     }
-    message = res.split("\r\n").filter(a => !!a).map(b => modifyVHW(b, -50)).join("\r\n");
-    client.write(message);
+    setInterval(() =>{
+        message = res.split("\r\n").filter(a => !!a).map(b => modifyVHW(b, 50)).join(" Plus\r\n");
+       // console.log(message);
+    }, 500);
+    setInterval(() => {
+        message = res.split("\r\n").filter(a => !!a).map(b => modifyVHW(b, -50)).join(" Minus\r\n");
+      //  console.log(message);
+    }, 590); 
+    //message = res.split("\r\n").filter(a => !!a).map(b => modifyVHW(b, -50)).join("\r\n");
+   // console.log(message);
+    var is_kernel_buffer_full = client.write(message);
+    if(!is_kernel_buffer_full){
+        console.log("Client says wait");
+        client.pause();
+    }
     
+    client.on('drain',function(){
+       client.resume();
+    });
+
+    client.on('end', (data) => {
+        console.log("No more data from Client " + client.bytesWritten);
+    });
 });      
+
+
 
 console.log("Hello world!");
 
