@@ -4,6 +4,10 @@ import { verifyCS } from './checksum.js';
 //VHW = Water Speed and Heading. $GPVHW,HEADING_DEGRESS_TRUE,T,HEADING_DEG_MAGNETIC,M,SPEED_KNOTS,N,SPEED_KMH,K*hh
 //Esim. $GPVHW,,T,331.7,M,47.2,N,87.4,K*60
 const vhw = (input) => {
+    if (input == null) {
+        return "Invalid input";
+    }
+  
     let message = input.toString();
     if (message.length == 0 || !message.match("VHW")) {
         return "Invalid input";
@@ -16,10 +20,14 @@ const vhw = (input) => {
 
 //Lisätään parametrin prosenttiluku nopeuteen, lasketaan uusi cheksum, palautetaan muutettu viesti
 export const modifyVHW = (input, change) => {
+    if (input == null) {
+        return "Invalid input";
+    }
+    
     let modifyer = 1;
     let message = input.toString();
-    if (message.length == 0 || !message.match("VHW")) {
-        return "Invalid input";
+    if (!message.match("VHW")) {
+        return message;
     }
     if (change == null || typeof change != 'number'){
         return "Rate not defined"
@@ -34,7 +42,7 @@ export const modifyVHW = (input, change) => {
     iterate[7] = (iterate[7] * modifyer).toFixed(1);
     let almost = iterate.toString();
     let cs = calculateCS(almost);
-    let modified = "$"+almost+"*"+cs+"\r\n";
+    let modified = "$"+almost+"*"+cs;
     return modified;
 }
 
