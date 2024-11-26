@@ -34,14 +34,15 @@ server.on('connection', (socket) =>{
     console.log('Server is IP4/IP6 : ' + family);
     var lport = socket.localPort;
     var laddr = socket.localAddress;
-    console.log('Server is listening to LOCAL port ' + lport);
+    console.log('Server LOCAL port ' + lport);
     console.log('Server LOCAL ip ' + laddr);
     socket.setEncoding('utf8');
 
    //Tänne laitetaan mitä tehdään sitten kun ei lueta dataa tiedostosta
    socket.on('data', (data) =>{
         //socket.write(data);
-     
+        
+       // socket.on('end', socket.end);
     });
 });
 
@@ -79,7 +80,10 @@ client.on('data', (data) =>{
     message = res.split("\r\n").filter(a => !!a).map(b => locationLostRMC(b)).join("\r\n");
     client.write(message);
     
-});      
+    client.on('end', client.end);
+});
+
+      
 
 console.log("Hello world!");
 
