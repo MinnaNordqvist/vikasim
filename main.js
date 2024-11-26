@@ -38,13 +38,10 @@ server.on('connection', (socket) =>{
     console.log('Server LOCAL ip ' + laddr);
     socket.setEncoding('utf8');
 
+   //Tänne laitetaan mitä tehdään sitten kun ei lueta dataa tiedostosta
    socket.on('data', (data) =>{
-        var bread = socket.bytesRead;
-        var bwrite = socket.bytesWritten;
-        console.log('Bytes read : ' + bread);
-        console.log('Bytes written : ' + bwrite);
-        console.log('Data sent to server : ' + data);
-        
+        //socket.write(data);
+     
     });
 });
 
