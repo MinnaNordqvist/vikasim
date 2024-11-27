@@ -6,7 +6,7 @@ import { modifyRPM } from './hooks/RPM.js';
 import { modifyVHW } from './hooks/VHW.js';
 
 let server, istream = fs.createReadStream("./data/data.txt");
-//Luodaan serveri
+//Luodaan serveri joka lukee tiedostosta "Stormwind dataa"
 server = net.createServer((socket) => {
     socket.pipe(process.stdout);
     istream.on("readable", function () {
@@ -20,8 +20,11 @@ server = net.createServer((socket) => {
     }) 
 });
 
-server.on('error', (err) => {
-    throw err;
+//Luodaan serveri joka lukee dataa Stormwindista:
+// let server = net.createServer();
+
+server.on('close',function(){
+    console.log('Server closed !');
 });
 
 server.on('connection', (socket) =>{
@@ -46,7 +49,11 @@ server.on('connection', (socket) =>{
     });
 });
 
+server.on('error', (err) => {
+    throw err;
+});
 
+//Dynaaminen portin valinta
 server.listen(() => {
     var address = server.address();
     console.log("opened server on %j", address);
@@ -72,6 +79,9 @@ var client  = net.connect({port: server.address().port, host:''}, function(){
 
 client.setEncoding('utf8');
 client.on('data', (data) =>{
+    //Jos pitää testata, saako client dataa serveriltä:
+   // console.log(data);
+    
     let res="";
     let message = "";
     for (const chunk of data){
@@ -80,6 +90,15 @@ client.on('data', (data) =>{
     message = res.split("\r\n").filter(a => !!a).map(b => locationLostRMC(b)).join("\r\n");
     client.write(message);
     
+    //Jos client ei lähetä dataa, lukeminen laitetaan tauolle
+    if(!client.write(message)){
+        client.pause();
+    }
+
+    client.on('drain', () =>{
+        client.resume();
+    })
+
     client.on('end', client.end);
 });
 
