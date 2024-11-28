@@ -1,10 +1,14 @@
 import fs from 'node:fs';
 import net from 'node:net';
+import 'dotenv/config'
+
 import { locationLostRMC } from './hooks/RMC.js';
 import { modifyRMCspeed } from './hooks/RMC.js';
 import { modifyRPM } from './hooks/RPM.js';
 import { modifyVHW } from './hooks/VHW.js';
 
+const localP = process.env.PORT;
+console.log(`${localP}`); 
 let server, istream = fs.createReadStream("./data/data.txt");
 //Luodaan serveri joka lukee tiedostosta "Stormwind dataa"
 server = net.createServer((socket) => {

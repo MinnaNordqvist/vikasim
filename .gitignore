@@ -3,3 +3,12 @@ data/
 
 #Ignore files in modules
 modules/
+
+#Ignore .env
+.env
+
+#Ignore node_modules
+node_modules
+
+#Ignore config.json
+config.json
