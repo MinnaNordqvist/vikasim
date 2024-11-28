@@ -4,7 +4,7 @@ const calculateCS = (input) => {
     let checksum = 0;
     
     if (input == null){
-        return "No input";
+        return console.log("No input");
     }
     
     for(var i = 0; i < input.length; i++) {
@@ -22,7 +22,7 @@ const calculateCS = (input) => {
 //Tarkistetaan onko viestin Checksum oikein
 export const verifyCS = (input) => {
     if (input == null) {
-        return "No input";
+        return console.log("No input");
     }
     
     let og = input.slice(input.length - 2);

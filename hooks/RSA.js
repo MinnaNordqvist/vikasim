@@ -6,12 +6,12 @@ import { verifyCS } from './checksum.js';
 
 const rsa = (input) => {
     if (input == null) {
-        return "Invalid input";
+        return console.log("Invalid input");
     }
     
     let message = input.toString();
     if (message.length == 0 || !message.match("RSA")) {
-        return "Invalid input";
+        return console.log("Invalid input");
     }
     
     let csVerify = verifyCS(input);

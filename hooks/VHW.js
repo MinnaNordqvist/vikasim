@@ -21,7 +21,7 @@ const vhw = (input) => {
 //Lisätään parametrin prosenttiluku nopeuteen, lasketaan uusi cheksum, palautetaan muutettu viesti
 export const modifyVHW = (input, change) => {
     if (input == null) {
-        return "Invalid input";
+        return console.log("Invalid input");
     }
     
     let modifyer = 1;
@@ -30,7 +30,7 @@ export const modifyVHW = (input, change) => {
         return message;
     }
     if (change == null || typeof change != 'number'){
-        return "Rate not defined"
+        return console.log("Rate not defined");
     }
     if (change != 0) {
         modifyer = ((100 + change)/100).toFixed(2);

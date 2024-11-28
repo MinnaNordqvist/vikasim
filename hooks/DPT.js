@@ -6,12 +6,12 @@ import { verifyCS } from './checksum.js';
 //Huom: Datasetissä viestiin lisätty arvo T ennen checksumia.
 const dpt = (input) => {
     if (input == null) {
-        return "Invalid input";
+        return console.log("Invalid input");
     }
    
     let message = input.toString();
     if (message.length == 0 || !message.match("DPT")) {
-        return "Invalid input";
+        return console.log("Invalid input");
     }
     
     let csVerify = verifyCS(input);

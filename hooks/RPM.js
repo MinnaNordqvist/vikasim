@@ -7,12 +7,12 @@ import { verifyCS } from './checksum.js';
 
 const rpm = (input) => {
     if (input == null) {
-        return "Invalid input";
+        return console.log("Invalid input");
     }
     
     let message = input.toString();
     if (message.length == 0 || !message.match("RPM")) {
-        return "Invalid input";
+        return console.log("Invalid input");
     }
     
     let csVerify = verifyCS(input);
@@ -23,7 +23,7 @@ const rpm = (input) => {
 //Lisätään parametrin prosenttimuutos kierroslukuun, lasketaan uusi checksum, palautetaan muutetu viesti
 export const modifyRPM = (input, change) => {
     if (input == null) {
-        return "Invalid input";
+        return console.log("Invalid input");
     }
     
     let modifyer = 1;
@@ -32,7 +32,7 @@ export const modifyRPM = (input, change) => {
         return message;
     }
     if (change == null || typeof change != 'number'){
-        return "Rate not defined"
+        return console.log("Rate not defined");
     }
     if (change != 0) {
         modifyer = ((100 + change)/100).toFixed(2);

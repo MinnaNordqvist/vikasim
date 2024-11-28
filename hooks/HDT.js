@@ -5,11 +5,11 @@ import { verifyCS } from './checksum.js';
 //Esim. $GPHDT,339.3,T*3F
 const hdt = (input) => {
     if (input == null) {
-        return "Invalid input";
+        return console.log("Invalid input");
     }
     let message = input.toString();
     if (message.length == 0 || !message.match("HDT")) {
-        return "Invalid input";
+        return console.log("Invalid input");
     }
 
     let csVerify = verifyCS(input);
