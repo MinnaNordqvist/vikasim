@@ -8,8 +8,18 @@ import { modifyRMCspeed } from './hooks/RMC.js';
 import { modifyRPM } from './hooks/RPM.js';
 import { modifyVHW } from './hooks/VHW.js';
 
-const localP = config.StormWindLP;
-console.log(`${localP}`); 
+//Tähän määritellään Stormwindin ja Clientin (=plotteri) portit ja IP:t
+const serverPort = config.ServerPort;
+const ServerAddress = config.ServerAddress;
+const localP = config.StormWindLocalPort;
+const localAddr = config.StormWindLocalAddr;
+const clientPort = config.ClientLocalPort;
+const clientAddr = config.ClientLocalAddr;
+console.log("Serveri kuuntelee porttia: " + serverPort + " ja sen osoite on: " + ServerAddress);
+console.log("Stormwind Portista: " + localP + " ja osoitteesta: " + localAddr);
+console.log("Plotteri portista: " + clientPort + " ja osoitteesta: " + clientAddr); 
+
+
 let server, istream = fs.createReadStream("./data/data.txt");
 //Luodaan serveri joka lukee tiedostosta "Stormwind dataa"
 server = net.createServer((socket) => {
