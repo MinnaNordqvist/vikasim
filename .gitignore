@@ -10,5 +10,5 @@ modules/
 #Ignore node_modules
 node_modules
 
-#Ignore config.json
-config.json
+#Ignore config.js
+config.js

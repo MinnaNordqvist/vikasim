@@ -1,13 +1,14 @@
 import fs from 'node:fs';
 import net from 'node:net';
 import 'dotenv/config'
+import config from './config.js';
 
 import { locationLostRMC } from './hooks/RMC.js';
 import { modifyRMCspeed } from './hooks/RMC.js';
 import { modifyRPM } from './hooks/RPM.js';
 import { modifyVHW } from './hooks/VHW.js';
 
-const localP = process.env.PORT;
+const localP = config.StormWindLP;
 console.log(`${localP}`); 
 let server, istream = fs.createReadStream("./data/data.txt");
 //Luodaan serveri joka lukee tiedostosta "Stormwind dataa"
@@ -92,12 +93,12 @@ client.on('data', (data) =>{
         res += chunk;
     }
     message = res.split("\r\n").filter(a => !!a).map(b => modifyRPM(b, 50)).join("\r\n");
-    client.write(message);
+    //client.write(message);
     
     //Jos client ei lähetä dataa, lukeminen laitetaan tauolle
-    if(!client.write(message)){
+  //  if(!client.write(message)){
         client.pause();
-    }
+   // }
 
     client.on('drain', () =>{
         client.resume();
