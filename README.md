@@ -1,2 +1,2 @@
 Käyttöohje
-Koneella pitää olla asennettuna Node.js ja npm ennen ohjelman asentamista. 
+Koneella pitää olla asennettuna Node.js ennen ohjelman asentamista. 
