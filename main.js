@@ -102,13 +102,13 @@ client.on('data', (data) =>{
     for (const chunk of data){
         res += chunk;
     }
-    message = res.split("\r\n").filter(a => !!a).map(b => modifyRPM(b, 50)).join("\r\n");
-    //client.write(message);
+    message = res.split("\r\n").filter(a => !!a).map(b => locationLostRMC(b)).join("\r\n");
+    client.write(message);
     
     //Jos client ei lähetä dataa, lukeminen laitetaan tauolle
-  //  if(!client.write(message)){
+    if(!client.write(message)){
         client.pause();
-   // }
+    }
 
     client.on('drain', () =>{
         client.resume();

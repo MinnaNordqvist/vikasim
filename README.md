@@ -2,7 +2,7 @@ Käyttöohje:
 Koneella pitää olla asennettuna Node.js ennen kun asennat ohjelman.
 Aja ensin 'npm install' jotta laitteelle asentuu dependencies kohdassa määritellyt npm laajennukset
 Lisää root -directoryyn .gitignoressa mainitut tiedostot:
-.env
+.env ja config.js
 
 
 Demo: 
