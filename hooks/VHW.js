@@ -36,13 +36,12 @@ export const modifyVHW = (input, change) => {
         modifyer = ((100 + change)/100).toFixed(2);
     }
 
-    let mod = message.slice(1, -3);
-    let iterate = mod.split(',');
+    let iterate = message.slice(1, -3).split(',');
     iterate[5] = (iterate[5] * modifyer).toFixed(1);
     iterate[7] = (iterate[7] * modifyer).toFixed(1);
     let almost = iterate.toString();
     let cs = calculateCS(almost);
-    let modified = "$"+almost+"*"+cs;
+    let modified = `$${almost}*${cs}` 
     return modified;
 }
 

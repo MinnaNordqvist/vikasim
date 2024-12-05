@@ -5,6 +5,7 @@ import config from './config.js';
 
 import { locationLostRMC } from './hooks/RMC.js';
 import { modifyRMCspeed } from './hooks/RMC.js';
+import { moveShip } from './hooks/RMC.js';
 import { modifyRPM } from './hooks/RPM.js';
 import { modifyVHW } from './hooks/VHW.js';
 
