@@ -8,6 +8,7 @@ import { modifyRPM } from './hooks/RPM.js';
 import rmc from './hooks/RMC.js';
 import { modifyRMCspeed } from './hooks/RMC.js';
 import { locationLostRMC } from './hooks/RMC.js';
+import { moveShip } from './hooks/RMC.js';
 import rot from './hooks/ROT.js'
 import rsa from './hooks/RSA.js';
 import vhw from './hooks/VHW.js';
@@ -91,15 +92,15 @@ client.on('data', (data) =>{
     for (const chunk of data){
         res += chunk;
     }
-    setInterval(() =>{
-        message = res.split("\r\n").filter(a => !!a).map(b => modifyVHW(b, 50)).join(" Plus\r\n");
+  //  setInterval(() =>{
+  //      message = res.split("\r\n").filter(a => !!a).map(b => modifyVHW(b, 50)).join(" Plus\r\n");
        // console.log(message);
-    }, 500);
-    setInterval(() => {
-        message = res.split("\r\n").filter(a => !!a).map(b => modifyVHW(b, -50)).join(" Minus\r\n");
+   // }, 500);
+  //  setInterval(() => {
+  //      message = res.split("\r\n").filter(a => !!a).map(b => modifyVHW(b, -50)).join(" Minus\r\n");
       //  console.log(message);
-    }, 590); 
-    //message = res.split("\r\n").filter(a => !!a).map(b => modifyVHW(b, -50)).join("\r\n");
+   // }, 590); 
+    message = res.split("\r\n").filter(a => !!a).map(b => moveShip(b, "N")).join("\r\n");
    // console.log(message);
     var is_kernel_buffer_full = client.write(message);
     if(!is_kernel_buffer_full){

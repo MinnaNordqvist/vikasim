@@ -3,3 +3,8 @@ data/
 
 #Ignore modules
 modules/
+node_modules/
+
+#Ignore .env and config.js
+.env
+config.js
