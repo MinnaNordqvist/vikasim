@@ -4,6 +4,11 @@ import { verifyCS } from './checksum.js';
 //RMC = Recommended Minimum. 
 //$GPRMC,UTC_TIME,STATUS,LATITUDE,N/S,LONGITUDE,E/W,SPEED_KNOTS,DEGREES_TRUE,DATE,DEGREES_MAGNETIC,E/W,FAA*hh
 //Esim. $GPRMC,122332.58,A,5959.966064,N,02435.708935,E,40.3,337.1,281024,,,A*67
+//Esim. $GPRMC,122332.58,A,5959.966064,N,02435.708935,E,40.3,337.1,281024,,,A*67
+//LATITUDE: ddmm.mmmmmm jossa dd = asteet ja mm.mmmmmm = minuutit
+//LONGITUDE: dddmm.mmmmmm jossa ddd = asteet ja mm.mmmmmm = minuutit
+//5959.966064,N = N 59° 59,966064’
+//02435.708935,E = E 024° 35,708935’
 const rmc = (input) => {
     if (input == null) {
         return  console.log("Invalid input");
@@ -106,8 +111,8 @@ export const moveShip = (input, direction) => {
  
     let iterate = message.slice(1, -3).split(',');    
     iterate[3] = (parseFloat(iterate[3]) + modLat).toFixed(6);
-    iterate[5] =  0 + (parseFloat(iterate[5]) + modLong).toFixed(6);    
- 
+    iterate[5] =  (parseFloat(iterate[5]) + modLong).toFixed(6);    
+    if(iterate[5] < 10000){iterate[5] = 0 + iterate[5];}    
     let almost = iterate.toString();
     let cs = calculateCS(almost);
     let modified = `$${almost}*${cs}`
