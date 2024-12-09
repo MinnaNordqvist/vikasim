@@ -4,6 +4,10 @@ import { verifyCS } from './checksum.js';
 //RMC = Recommended Minimum. 
 //$GPRMC,UTC_TIME,STATUS,LATITUDE,N/S,LONGITUDE,E/W,SPEED_KNOTS,DEGREES_TRUE,DATE,DEGREES_MAGNETIC,E/W,FAA*hh
 //Esim. $GPRMC,122332.58,A,5959.966064,N,02435.708935,E,40.3,337.1,281024,,,A*67
+//LATITUDE: ddmm.mmmmmm jossa dd = asteet ja mm.mmmmmm = minuutit
+//LONGITUDE: dddmm.mmmmmm jossa ddd = asteet ja mm.mmmmmm = minuutit
+//5959.966064,N = N 59° 59,966064’
+//02435.708935,E = E 024° 35,708935’
 const rmc = (input) => {
     if (input == null) {
         return "Invalid input";
@@ -68,19 +72,27 @@ export const locationLostRMC = (input) => {
 
 }
 
-//Manipuloidaan sijaintia haluttuun suuntaan, lasketaan uusi checksum ja palautetaan muutettu viesti
+let firstLat = 0;
+let firstLong = 0;
+
+const getLat = () => firstLat;
+const setLat = (val) => {firstLat = val;};
+const getLong = () => firstLong;
+const setLong = (val) => {firstLong = val;};
+
+const directions = [
+    {dir: "N", lat:  0.011, long: 0},
+    {dir: "S", lat:  -0.011, long: 0},
+    {dir: "E", lat:  0, long: 0.037},
+    {dir: "W", lat:  0, long: -0.037},
+    {dir: "NE", lat:  0.006, long: 0.019},
+    {dir: "NW", lat:  0.006, long: -0.019},
+    {dir: "SE", lat:  -0.006, long: 0.019},
+    {dir: "SW", lat:  -0.006, long: -0.019}
+];
+
+//Manipuloidaan sijaintia haluttuun suuntaan, lasketaan uusi checksum ja palautetaan muutettu viesti. Ensimmäinen kutsu
 export const moveShip = (input, direction) => {
-    const directions = [
-        {dir: "N", lat:  0.011, long: 0},
-        {dir: "S", lat:  -0.011, long: 0},
-        {dir: "E", lat:  0, long: 0.037},
-        {dir: "W", lat:  0, long: -0.037},
-        {dir: "NE", lat:  0.006, long: 0.019},
-        {dir: "NW", lat:  0.006, long: -0.019},
-        {dir: "SE", lat:  -0.006, long: 0.019},
-        {dir: "SW", lat:  -0.006, long: -0.019}
-    ];
- 
     let modLat;
     let modLong;
     let going;   
@@ -105,8 +117,11 @@ export const moveShip = (input, direction) => {
  
     let iterate = message.slice(1, -3).split(',');    
     iterate[3] = (parseFloat(iterate[3]) + modLat).toFixed(6);
-    iterate[5] =  0 + (parseFloat(iterate[5]) + modLong).toFixed(6);    
- 
+    iterate[5] =  (parseFloat(iterate[5]) + modLong).toFixed(6);
+    if(iterate[5] < 10000){iterate[5] = 0 + iterate[5];}    
+    setLat(iterate[3]);
+    setLong(iterate[5]);
+
     let almost = iterate.toString();
     let cs = calculateCS(almost);
     let modified = `$${almost}*${cs}`
@@ -114,5 +129,57 @@ export const moveShip = (input, direction) => {
     return modified;
     
 }
+
+//Jatketaan sijainnin manipulointia edellisestä paikasta haluttuun suuntaan, lasketaan uusi checksum ja palautetaan muutettu viesti.
+export const moveShipAgain = (input, direction) => {
+    let modLat;
+    let modLong;
+    let going;   
+    let startLat;
+    let startLong;
+
+    if (input == null) {
+        return console.log("Invalid input");
+    }
+
+    let message = input.toString();
+    if (!message.match("RMC")) {
+        return message;
+    }
+    going = directions.find(({dir}) => dir === direction);
+
+    if (going == undefined) {
+        return console.log("Direction not found");
+    }
+
+    modLat = going.lat;
+    modLong = going.long;
+    startLat = getLat();
+    startLong = getLong();
+    
+    let iterate = message.slice(1, -3).split(','); 
+    
+    if (startLat !== 0 && startLong !== 0){
+        iterate[3] = (parseFloat(startLat) + modLat).toFixed(6);
+        iterate[5] = (parseFloat(startLong) + modLong).toFixed(6);
+        if(iterate[5] < 10000){iterate[5] = 0 + iterate[5];}    
+        setLat(iterate[3]);
+        setLong(iterate[5]);
+    } else {
+        iterate[3] = (parseFloat(iterate[3]) + modLat).toFixed(6);
+        iterate[5] = (parseFloat(iterate[5]) + modLong).toFixed(6);
+        if(iterate[5] < 10000){iterate[5] = 0 + iterate[5];}    
+        setLat(iterate[3]);
+        setLong(iterate[5]);
+    }
+
+    
+    let almost = iterate.toString();
+    let cs = calculateCS(almost);
+    let modified = `$${almost}*${cs}`
+        
+    return modified;
+}
+
 
 export default rmc;
