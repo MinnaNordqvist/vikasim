@@ -33,14 +33,14 @@ async function processLineByLine() {
 
 await processLineByLine();     
 console.log("Hello world!");
-for(var i = 0; i < data.length -1; i++){
+for(var i = 0; i < data.length - 1; i++){
     let j = i + 1;
     if(data[i].match("RMC")){
         gps.push(data[i]);
-        message = moveShip(data[i], "N");
-        iterate = moveShipAgain(data[i], "W");
+      //  message = moveShip(data[i], "NW");
+        iterate = moveShipAgain(data[i], "E");
         console.log(iterate);
-     //   console.log(message);
+     //    console.log(message);
     }
    
    

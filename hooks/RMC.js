@@ -230,11 +230,21 @@ export const moveShipAgain = (input, direction) => {
             latMin = Math.abs(latMin).toFixed(6);
             latDeg = Math.abs(latDeg);
             let x = (lat == "N") ? "S" :
-                    (lat == "S") ? "N" :
-            lat = x;     
+                    (lat == "S") ? "N" :  
+            lat = x;        
             setDefLat(x);
         }
-       
+        //Mikäli Latitude > 90 laskutoimituksen jälkeen:
+        if (latDeg >= 90 ) {
+            latDeg = 180 - latDeg;
+            if (latMin > 0) {latDeg = latDeg - 1;}
+            longDeg = 180 - longDeg;
+            if (longMin > 0) {longDeg = longDeg - 1; longMin = (60 - longMin).toFixed(6);}
+            let x = (long == "E") ? "W" :
+                    (long == "W") ? "E" : 
+            long = x;        
+            setDefLong(x);
+        }
         latMin = latMin.toString();
         latDeg = latDeg.toString();
         //Palautetaan puuttuvat nollat
@@ -258,10 +268,19 @@ export const moveShipAgain = (input, direction) => {
         if (longMin < 0 && longDeg <= 0 ){
             longDeg = Math.abs(longDeg);
             longMin = Math.abs(longMin).toFixed(6);
-            let x = (long == "E") ? "W" :
-                    (long == "W") ? "E" :
-            long = x;  
+            let x = (long == "W")  ? "E" :
+                    (long == "E") ? "W":
+            long = x;        
             setDefLong(x);
+        }
+        //Mikäli Longitude menee yli 180 asteen
+        if (longDeg >= 180 ){
+            longDeg = 360 - longDeg;
+            if(longMin > 0) {longDeg = longDeg - 1; longMin = (60 - longMin).toFixed(6);}
+            let x = (long == "W")  ? "E" :
+                    (long == "E") ? "W":
+            long = x;        
+            setDefLong(x); 
         }
 
         longMin = longMin.toString();
@@ -275,28 +294,7 @@ export const moveShipAgain = (input, direction) => {
         //Tallennetaan arvo
         setLong(iterate[5]);
       
-        //Mikäli Longitude menee yli 180 asteen
-     //   if (iterate[5] > 18000) {
-     //       iterate[5] = (36000 - iterate[5]).toFixed(6);
-     //       let x = (getDefLong() == "W")  ? "E" :
-    //                (getDefLong() == "E") ? "W":
-    //        setDefLong(x); 
-     //   }     
-       
     } 
-        
-      
-         //Mikäli Longitude menee yli 180 asteen
-      //   if (iterate[5] > 18000) {
-      //      iterate[5] = (36000 - iterate[5]).toFixed(6);
-      //      let x = (getDefLong() == "W")  ? "E" :
-     //               (getDefLong() == "E") ? "W":
-     //       setDefLong(x); 
-     //   }
-         //Palautetaan nolla, mikäli JavaScript poisti.
-    //    if(iterate[5] < 10000){iterate[5] = 0 + iterate[5];}    
-    //    setLat(iterate[3]);
-    //    setLong(iterate[5]);
     
     iterate[4] = getDefLat();
     iterate[6] = getDefLong();    
