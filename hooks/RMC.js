@@ -1,5 +1,10 @@
 import calculateCS from './checksum.js';
 import { verifyCS } from './checksum.js';
+import { directions } from './directions.js';
+import { getLat, setLat } from './directions.js';
+import { getDefLat, setDefLat } from './directions.js';
+import { getLong, setLong } from './directions.js';
+import { getDefLong, setDefLong } from './directions.js';
 
 //RMC = Recommended Minimum. 
 //$GPRMC,UTC_TIME,STATUS,LATITUDE,N/S,LONGITUDE,E/W,SPEED_KNOTS,DEGREES_TRUE,DATE,DEGREES_MAGNETIC,E/W,FAA*hh
@@ -72,43 +77,8 @@ export const locationLostRMC = (input) => {
 
 }
 
-let firstLat = 0;
-let firstLong = 0;
-let defLat = "N";
-let defLong = "E";
-const getLat = () => firstLat;
-const setLat = (val) => {firstLat = val;};
-const getLong = () => firstLong;
-const setLong = (val) => {firstLong = val;};
-const getDefLat = () => defLat;
-const setDefLat = (val) => {defLat = val;};
-const getDefLong = () => defLong;
-const setDefLong = (val) => {defLong = val;};
-
-//Oletetaan alussa että LATITUDE = N ja LONGITUDE = E
-const directions = [
-    {dir: "N", lat:  0.011, long: 0},
-    {dir: "S", lat:  -0.011, long: 0},
-    {dir: "E", lat:  0, long: 0.037},
-    {dir: "W", lat:  0, long: -0.037},
-    {dir: "NE", lat:  0.006, long: 0.019},
-    {dir: "NW", lat:  0.006, long: -0.019},
-    {dir: "SE", lat:  -0.006, long: 0.019},
-    {dir: "SW", lat:  -0.006, long: -0.019}
-];
-
 //Manipuloidaan sijaintia haluttuun suuntaan, lasketaan uusi checksum ja palautetaan muutettu viesti. Ensimmäinen kutsu
 export const moveShip = (input, direction) => {
-    let latDeg;
-    let longDeg;
-    let latMin;
-    let longMin;
-    let lat;
-    let long;
-    let modLat;
-    let modLong;
-    let going;   
-
     if (input == null) {
         return console.log("Invalid input");
     }
@@ -118,22 +88,22 @@ export const moveShip = (input, direction) => {
         return message;
     }
 
-    going = directions.find(({dir}) => dir === direction);
+    let going = directions.find(({dir}) => dir === direction);
 
     if (going == undefined) {
         return console.log("Direction not found");
     }
     
-    modLat = going.lat;
-    modLong = going.long;
+    let modLat = going.lat;
+    let modLong = going.long;
     
     let iterate = message.slice(1, -3).split(',');    
-    latDeg = iterate[3].slice(0, 2); // [0, 90]
-    latMin = iterate[3].slice(2, 11); // [0, 59.999]
-    lat = iterate[4]; // N/S
-    longDeg = iterate[5].slice(0,3); // [0, 180]
-    longMin = iterate[5].slice(3,12); // [0, 59.999]
-    long = iterate[6]; // E/W
+    let latDeg = iterate[3].slice(0, 2); // [0, 90]
+    let latMin = iterate[3].slice(2, 11); // [0, 59.999]
+    let lat = iterate[4]; // N/S
+    let longDeg = iterate[5].slice(0,3); // [0, 180]
+    let longMin = iterate[5].slice(3,12); // [0, 59.999]
+    let long = iterate[6]; // E/W
     //Tarkistetaan onko Lat N ja Long E, mikäli ei ole, vaihdetaan moderaattorien merkit +-
     let chooseLat = (lat == "N") ? modLat : -(modLat);
     let chooseLong = (long == "E") ? modLong : -(modLong);
@@ -144,21 +114,25 @@ export const moveShip = (input, direction) => {
         latDeg = parseInt(latDeg) + 1;
         latMin = (parseFloat(latMin) - 60).toFixed(6);
     }
-    if (latMin < 0){
+    if (latMin < 0 && latDeg > 0){
         latDeg = parseInt(latDeg) - 1;
         latMin = (60 + parseFloat(latMin)).toFixed(6);
     }
   
     //Mikäli Latitude menee negatiiviseksi laskutoimituksen jälkeen:
-    if (latDeg < 0 ) {
+    if (latMin < 0 && latDeg <= 0 ) {
+        latMin = Math.abs(latMin).toFixed(6);
         latDeg = Math.abs(latDeg);
         let x = (lat == "N") ? "S" :
                 (lat == "S") ? "N" :
         lat = x;     
     }
+   
+    latMin = latMin.toString();
+    latDeg = latDeg.toString();
     //Palautetaan puuttuvat nollat
-    if (latMin < 10.00){latMin = 0 + latMin;}
-    if (latDeg < 10.00){latDeg = 0 + latDeg;}
+    if (latMin.length < 9){latMin = 0 + latMin;}
+    if (latDeg.length < 2){latDeg = 0 + latDeg;}
     iterate[3] = latDeg+latMin;
 
     //Lasketaan longitude muutos minuuteissa
@@ -167,28 +141,34 @@ export const moveShip = (input, direction) => {
         longDeg = parseInt(longDeg) + 1;
         longMin = (parseFloat(longMin) - 60).toFixed(6);
     }
-    if (longMin < 0){
+    if (longMin < 0 && longDeg > 0){
         longDeg = parseInt(longDeg) - 1;
         longMin = (60 + parseFloat(longMin)).toFixed(6);
     }
     
     //Mikäli Longitude menee negatiiviseksi laskutoimituksen jälkeen:
-    if(longDeg < 0 ){
+    if(longMin && longDeg <= 0 ){
         longDeg = Math.abs(longDeg);
+        longMin = Math.abs(longMin).toFixed(6);
         let x = (long == "E") ? "W" :
                 (long == "W") ? "E" :
         long = x;  
     }
 
+    longMin = longMin.toString();
+    longDeg = longDeg.toString();
     //Palautetaan nollat
-    if (longDeg < 10){longDeg = 0 + longDeg;}
-    if (longMin < 10){longMin = 0 + longMin;}
+    if (longDeg.length < 3){longDeg = 0 + longDeg;}
+    if (longMin.length < 9){longMin = 0 + longMin;}
     iterate[5] = longDeg+longMin;
     
     iterate[4] = lat;
     iterate[6] = long;
+    // Tallennetaan arvot settereihin
     setLat(iterate[3]);
     setLong(iterate[5]);
+    setDefLat(iterate[4]);
+    setDefLong(iterate[6]);
 
     let almost = iterate.toString();
     let cs = calculateCS(almost);
@@ -200,14 +180,6 @@ export const moveShip = (input, direction) => {
 
 //Jatketaan sijainnin manipulointia edellisestä paikasta haluttuun suuntaan, lasketaan uusi checksum ja palautetaan muutettu viesti.
 export const moveShipAgain = (input, direction) => {
-    let lat;
-    let long;
-    let modLat;
-    let modLong;
-    let going;   
-    let startLat;
-    let startLong;
-
     if (input == null) {
         return console.log("Invalid input");
     }
@@ -216,86 +188,116 @@ export const moveShipAgain = (input, direction) => {
     if (!message.match("RMC")) {
         return message;
     }
-    going = directions.find(({dir}) => dir === direction);
+    let going = directions.find(({dir}) => dir === direction);
 
     if (going == undefined) {
         return console.log("Direction not found");
     }
 
-    modLat = going.lat;
-    modLong = going.long;
-    startLat = getLat();
-    startLong = getLong();
-    lat = getDefLat();
-    long = getDefLong();
+    let modLat = going.lat;
+    let modLong = going.long;
+    let startLat = getLat();
+    let startLong = getLong();
+    let lat = getDefLat();
+    let long = getDefLong();
 
     let iterate = message.slice(1, -3).split(','); 
+   
     //Tarkistetaan onko Lat N ja Long E, mikäli ei ole, vaihdetaan moderaattorien merkit +-
     let chooseLat = (lat == "N") ? modLat : -(modLat);
     let chooseLong = (long == "E") ? modLong : -(modLong);
 
-    if (startLat !== 0 && startLong !== 0){
-        iterate[3] = (parseFloat(startLat) + chooseLat).toFixed(6);
+    if (startLat === 0 || startLong === 0){
+        return moveShip(input, direction);  
+        
+    } else {    
+        let latDeg = startLat.slice(0, 2); // [0, 90]
+        let latMin = startLat.slice(2, 11); // [0, 59.999]
+        let longDeg = startLong.slice(0,3); // [0, 180]
+        let longMin = startLong.slice(3,12); // [0, 59.999]
+        
+        latMin = (parseFloat(latMin) + chooseLat).toFixed(6);
+        if (latMin >= 60){
+            latDeg = parseInt(latDeg) + 1;
+            latMin = (parseFloat(latMin) - 60).toFixed(6);
+        }
+        if (latMin < 0 && latDeg > 0){
+            latDeg = parseInt(latDeg) - 1;
+            latMin = (60 + parseFloat(latMin)).toFixed(6);
+        }
         //Mikäli Latitude menee negatiiviseksi laskutoimituksen jälkeen:
-        if (iterate[3] < 0 && lat === "N") {
-            iterate[3] = Math.abs(iterate[3]);
-            setDefLat("S");
+        if (latMin < 0 && latDeg <= 0 ) {
+            latMin = Math.abs(latMin).toFixed(6);
+            latDeg = Math.abs(latDeg);
+            let x = (lat == "N") ? "S" :
+                    (lat == "S") ? "N" :
+            lat = x;     
+            setDefLat(x);
         }
-        if (iterate[3] < 0 && lat === "S"){
-            iterate[3] = Math.abs(iterate[3]);
-            setDefLat("N");
+       
+        latMin = latMin.toString();
+        latDeg = latDeg.toString();
+        //Palautetaan puuttuvat nollat
+        if (latMin.length < 9){latMin = 0 + latMin;}
+        if (latDeg.length < 2){latDeg = 0 + latDeg;}
+        iterate[3] = latDeg+latMin;
+        //Tallennetaan setteriin
+        setLat(iterate[3]);
+        
+        //Lasketaan longitude muutos minuuteissa
+        longMin = (parseFloat(longMin) + chooseLong).toFixed(6);
+        if (longMin >= 60){
+            longDeg = parseInt(longDeg) + 1;
+            longMin = (parseFloat(longMin) - 60).toFixed(6);
         }
-        iterate[5] = (parseFloat(startLong) + chooseLong).toFixed(6);
+        if (longMin < 0 && longDeg > 0){
+            longDeg = parseInt(longDeg) - 1;
+            longMin = (60 + parseFloat(longMin)).toFixed(6);
+        }
         //Mikäli Longitude menee negatiiviseksi laskutoimituksen jälkeen:
-         if(iterate[5] <= 0){
-            iterate[5] = Math.abs(iterate[5]).toFixed(6);
-            let x = (getDefLong() == "W")  ? "E" :
-                    (getDefLong() == "E") ? "W":
+        if (longMin < 0 && longDeg <= 0 ){
+            longDeg = Math.abs(longDeg);
+            longMin = Math.abs(longMin).toFixed(6);
+            let x = (long == "E") ? "W" :
+                    (long == "W") ? "E" :
+            long = x;  
             setDefLong(x);
-        }     
+        }
+
+        longMin = longMin.toString();
+        longDeg = longDeg.toString();
+        //Palautetaan nollat
+        if (longDeg.length < 2){longDeg = "00" + longDeg;}
+        if (longDeg.length < 3){longDeg = "0" + longDeg;}
+      
+        if (longMin.length < 9){longMin = "0" + longMin;}
+        iterate[5] = longDeg+longMin;
+        //Tallennetaan arvo
+        setLong(iterate[5]);
+      
         //Mikäli Longitude menee yli 180 asteen
-        if (iterate[5] > 18000) {
-            iterate[5] = (36000 - iterate[5]).toFixed(6);
-            let x = (getDefLong() == "W")  ? "E" :
-                    (getDefLong() == "E") ? "W":
-            setDefLong(x); 
-        }
-
-         //Palautetaan nolla, mikäli JavaScript poisti.
-        if(iterate[5] < 10000){iterate[5] = 0 + iterate[5];}    
-        setLat(iterate[3]);
-        setLong(iterate[5]);
-    } else {
-        iterate[3] = (parseFloat(iterate[3]) + chooseLat).toFixed(6);
-        if (iterate[3] < 0 && lat === "N") {
-            iterate[3] = Math.abs(iterate[3]);
-            setDefLat("S");
-        }
-        if (iterate[3] <= 0 && lat === "S"){
-            iterate[3] = Math.abs(iterate[3]);
-            setDefLat("N");
-        }
-        iterate[5] = (parseFloat(iterate[5]) + chooseLong).toFixed(6);
-         //Mikäli Longitude menee negatiiviseksi laskutoimituksen jälkeen:
-         if(iterate[5] <= 0){
-            iterate[5] = Math.abs(iterate[5]).toFixed(6);
-            let x = (getDefLong() == "W")  ? "E" :
-                    (getDefLong() == "E") ? "W":
-            setDefLong(x); 
-        }
+     //   if (iterate[5] > 18000) {
+     //       iterate[5] = (36000 - iterate[5]).toFixed(6);
+     //       let x = (getDefLong() == "W")  ? "E" :
+    //                (getDefLong() == "E") ? "W":
+    //        setDefLong(x); 
+     //   }     
+       
+    } 
+        
+      
          //Mikäli Longitude menee yli 180 asteen
-         if (iterate[5] > 18000) {
-            iterate[5] = (36000 - iterate[5]).toFixed(6);
-            let x = (getDefLong() == "W")  ? "E" :
-                    (getDefLong() == "E") ? "W":
-            setDefLong(x); 
-        }
+      //   if (iterate[5] > 18000) {
+      //      iterate[5] = (36000 - iterate[5]).toFixed(6);
+      //      let x = (getDefLong() == "W")  ? "E" :
+     //               (getDefLong() == "E") ? "W":
+     //       setDefLong(x); 
+     //   }
          //Palautetaan nolla, mikäli JavaScript poisti.
-        if(iterate[5] < 10000){iterate[5] = 0 + iterate[5];}    
-        setLat(iterate[3]);
-        setLong(iterate[5]);
-    }
-
+    //    if(iterate[5] < 10000){iterate[5] = 0 + iterate[5];}    
+    //    setLat(iterate[3]);
+    //    setLong(iterate[5]);
+    
     iterate[4] = getDefLat();
     iterate[6] = getDefLong();    
     let almost = iterate.toString();
