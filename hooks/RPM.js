@@ -1,9 +1,12 @@
 import calculateCS from './checksum.js';
 import { verifyCS } from './checksum.js';
 
-//RPM = Revolutions Per Minute. $GPRPM,S/E,SOURCE_NUMBER,SPEED_RPM,PROPELLER_PITCH_RATE,STATUS*hh 
-//Esim. $GPRPM,E,0,5350.0,100*01
-//Huom: datasetissä viestistä puuttuu viimeinen arvo STATUS.
+/*
+RPM = Revolutions Per Minute. $GPRPM,S/E,SOURCE_NUMBER,SPEED_RPM,PROPELLER_PITCH_RATE,STATUS*hh 
+propeller pitch = % of maximum, "-" means astern
+Esim. $GPRPM,E,0,5350.0,100*01
+Huom: datasetissä viestistä puuttuu viimeinen arvo STATUS.
+*/
 
 const rpm = (input) => {
     if (input == null) {

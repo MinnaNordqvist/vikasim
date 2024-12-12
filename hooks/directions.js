@@ -1,3 +1,5 @@
+//Näitä käytetään funktioissa moveShip ja moveShipAgain
+
 
 let firstLat = 0;
 let firstLong = 0;

@@ -1,8 +1,9 @@
 import calculateCS from './checksum.js';
 import { verifyCS } from './checksum.js';
-
-//HDT = Heading True. $GPHDT,HEADING_DEGRESS,T*hh
-//Esim. $GPHDT,339.3,T*3F
+/*
+HDT = Heading True. $GPHDT,HEADING_DEGRESS,T*hh
+Esim. $GPHDT,339.3,T*3F
+*/
 const hdt = (input) => {
     if (input == null) {
         return "Invalid input";

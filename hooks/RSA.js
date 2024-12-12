@@ -1,9 +1,9 @@
 import calculateCS from './checksum.js';
 import { verifyCS } from './checksum.js';
-
-//RSA = Rudder Sensor Angle. $GPRSA,RUDDER_SENSOR,STATUS,PORT_RUDDER_SENSOR,STATUS*hh
-//Esim. $GPRSA,12.6,A,12.6,A*57
-
+/*
+RSA = Rudder Sensor Angle. $GPRSA,RUDDER_SENSOR,STATUS,PORT_RUDDER_SENSOR,STATUS*hh
+Esim. $GPRSA,12.6,A,12.6,A*57
+*/
 const rsa = (input) => {
     if (input == null) {
         return "Invalid input";

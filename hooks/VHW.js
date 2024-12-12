@@ -1,8 +1,9 @@
 import calculateCS from './checksum.js';
 import { verifyCS } from './checksum.js';
-
-//VHW = Water Speed and Heading. $GPVHW,HEADING_DEGRESS_TRUE,T,HEADING_DEG_MAGNETIC,M,SPEED_KNOTS,N,SPEED_KMH,K*hh
-//Esim. $GPVHW,,T,331.7,M,47.2,N,87.4,K*60
+/*
+VHW = Water Speed and Heading. $GPVHW,HEADING_DEGRESS_TRUE,T,HEADING_DEG_MAGNETIC,M,SPEED_KNOTS,N,SPEED_KMH,K*hh
+Esim. $GPVHW,,T,331.7,M,47.2,N,87.4,K*60
+*/
 const vhw = (input) => {
     if (input == null) {
         return "Invalid input";

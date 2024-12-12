@@ -6,13 +6,15 @@ import { getDefLat, setDefLat } from './directions.js';
 import { getLong, setLong } from './directions.js';
 import { getDefLong, setDefLong } from './directions.js';
 
-//RMC = Recommended Minimum. 
-//$GPRMC,UTC_TIME,STATUS,LATITUDE,N/S,LONGITUDE,E/W,SPEED_KNOTS,DEGREES_TRUE,DATE,DEGREES_MAGNETIC,E/W,FAA*hh
-//Esim. $GPRMC,122332.58,A,5959.966064,N,02435.708935,E,40.3,337.1,281024,,,A*67
-//LATITUDE: ddmm.mmmmmm jossa dd = asteet ja mm.mmmmmm = minuutit [0000.000000, 9000.000000]
-//LONGITUDE: dddmm.mmmmmm jossa ddd = asteet ja mm.mmmmmm = minuutit [00000.000000, 18000.000000]
-//5959.966064,N = N 59° 59,966064’
-//02435.708935,E = E 024° 35,708935’
+/*
+RMC = Recommended Minimum. 
+$GPRMC,UTC_TIME,STATUS,LATITUDE,N/S,LONGITUDE,E/W,SPEED_KNOTS,DEGREES_TRUE,DATE,DEGREES_MAGNETIC,E/W,FAA*hh
+Esim. $GPRMC,122332.58,A,5959.966064,N,02435.708935,E,40.3,337.1,281024,,,A*67
+LATITUDE: ddmm.mmmmmm jossa dd = asteet ja mm.mmmmmm = minuutit [0000.000000, 9000.000000]
+LONGITUDE: dddmm.mmmmmm jossa ddd = asteet ja mm.mmmmmm = minuutit [00000.000000, 18000.000000]
+5959.966064,N = N 59° 59,966064’
+02435.708935,E = E 024° 35,708935’
+*/
 const rmc = (input) => {
     if (input == null) {
         return "Invalid input";
@@ -77,7 +79,7 @@ export const locationLostRMC = (input) => {
 
 }
 
-//Manipuloidaan sijaintia haluttuun suuntaan, lasketaan uusi checksum ja palautetaan muutettu viesti. Ensimmäinen kutsu
+//Manipuloidaan sijaintia haluttuun suuntaan, lasketaan uusi checksum ja palautetaan muutettu viesti. 
 export const moveShip = (input, direction) => {
     if (input == null) {
         return console.log("Invalid input");
@@ -178,7 +180,8 @@ export const moveShip = (input, direction) => {
     
 }
 
-//Jatketaan sijainnin manipulointia edellisestä paikasta haluttuun suuntaan, lasketaan uusi checksum ja palautetaan muutettu viesti.
+//Manipuloidaan sijaintia haluttuun suuntaan niin että tallennetaan muutettu sijainti ja jatketaan siitä seuraavalla kutsulla, 
+// lasketaan uusi checksum ja palautetaan muutettu viesti.
 export const moveShipAgain = (input, direction) => {
     if (input == null) {
         return console.log("Invalid input");
