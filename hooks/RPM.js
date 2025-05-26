@@ -29,7 +29,7 @@ export const modifyRPM = (input, change) => {
         return "Invalid input";
     }
     
-    let modifyer = 1;
+    let modifier = 1;
     let message = input.toString();
     if (!message.match("RPM")) {
         return message;
@@ -38,7 +38,7 @@ export const modifyRPM = (input, change) => {
         return "Rate not defined"
     }
     if (change != 0) {
-        modifyer = ((100 + change)/100).toFixed(2);
+        modifier = ((100 + change)/100).toFixed(2);
     }
 
     let mod = message.slice(1, -3);
