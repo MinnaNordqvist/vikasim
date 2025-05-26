@@ -92,14 +92,6 @@ client.on('data', (data) =>{
     for (const chunk of data){
         res += chunk;
     }
-  //  setInterval(() =>{
-  //      message = res.split("\r\n").filter(a => !!a).map(b => modifyVHW(b, 50)).join(" Plus\r\n");
-       // console.log(message);
-   // }, 500);
-  //  setInterval(() => {
-  //      message = res.split("\r\n").filter(a => !!a).map(b => modifyVHW(b, -50)).join(" Minus\r\n");
-      //  console.log(message);
-   // }, 590); 
     message = res.split("\r\n").filter(a => !!a).map(b => moveShip(b, "N")).join("\r\n");
    // console.log(message);
     var is_kernel_buffer_full = client.write(message);
@@ -121,11 +113,11 @@ client.on('data', (data) =>{
 
 console.log("Hello world!");
 
- 
 
 
 
-       
+
+
 
 
 
