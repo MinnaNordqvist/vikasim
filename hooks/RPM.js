@@ -43,7 +43,7 @@ export const modifyRPM = (input, change) => {
 
     let mod = message.slice(1, -3);
     let iterate = mod.split(',');
-    iterate[3] = (iterate[3] * modifyer).toFixed(1);
+    iterate[3] = (iterate[3] * modifier).toFixed(1);
     let almost = iterate.toString();
     let cs = calculateCS(almost);
     let modified = "$"+almost+"*"+cs;
